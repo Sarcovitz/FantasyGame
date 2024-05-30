@@ -1,6 +1,12 @@
 ﻿namespace FantasyGame.Configs;
 
+/// <summary>
+/// Represents data necessary to configure connection to SQL database
+/// </summary>
 public class SqlConfig
 {
-    public string ConnectionString { get; set; } = string.Empty;
+    /// <summary>
+    /// Gets or sets connection string to SQL database
+    /// </summary>
+    public string ConnectionString { get; } = string.Empty;
 }
