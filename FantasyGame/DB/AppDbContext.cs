@@ -24,8 +24,6 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultSchema("GAME");
-
         EntityTypeBuilder<User> user = modelBuilder.Entity<User>();
         user.ToTable("Users");
 

@@ -11,10 +11,11 @@ public class User
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public ulong Id { get; set; }
     [Required]
-    [StringLength(16)]
+    [StringLength(16, MinimumLength = 3)]
     public string Username { get; set; } = string.Empty;
     [Required]
     [EmailAddress]
+    [StringLength(320)]
     public string Email { get; set; } = string.Empty;
     [Required]
     [StringLength(64)]
