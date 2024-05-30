@@ -2,7 +2,6 @@ using FantasyGame.Configs;
 using FantasyGame.DB;
 using FantasyGame.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,7 +43,7 @@ if(!app.Services.GetRequiredService<IHost>().InitializeDatabase<AppDbContext>())
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
-{
+{ 
     app.UseSwagger();
     app.UseSwaggerUI();
 }
