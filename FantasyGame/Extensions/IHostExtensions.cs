@@ -12,7 +12,7 @@ public static class IHostExtensions
             using IServiceScope scope = host.Services.CreateScope();
 
             TContext? context = scope.ServiceProvider.GetRequiredService<TContext>();
-            context.Database.EnsureCreated();
+            
             context.Database.Migrate();
 
             return true;
