@@ -25,4 +25,12 @@
     <Folder Include="DB\Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\User\source\repos\FantasyGame\FantasyGame\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\User\source\repos\FantasyGame\FantasyGame\.editorconfig" />
+  </ItemGroup>
+
 </Project>
