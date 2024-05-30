@@ -12,4 +12,16 @@ public class AppDbContext : DbContext
     {
         _sqlConfig = sqlConfig.Value;
     }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseMySql(ServerVersion.AutoDetect(_sqlConfig.ConnectionString));        
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.HasDefaultSchema("GAME");
+
+        base.OnModelCreating(modelBuilder);
+    }
 }
