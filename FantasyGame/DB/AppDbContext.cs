@@ -1,5 +1,8 @@
-﻿namespace FantasyGame.DB;
+﻿using Microsoft.EntityFrameworkCore;
 
-public class AppDbContext
+namespace FantasyGame.DB;
+
+public class AppDbContext : DbContext
 {
+
 }
