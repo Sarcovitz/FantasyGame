@@ -3,9 +3,8 @@ using FantasyGame.DB;
 using FantasyGame.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +37,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(ServiceLifetime.Scoped);
 
 //AUTHENTICATION
+string? jwtSecret = builder.Configuration.GetValue<string>("JwtConfig:Key");
+if (string.IsNullOrEmpty(jwtSecret) || jwtSecret.Length != 32)
+{
+    throw new Exception("JWT Key is null or empty or its length is different that 32 charaters.");
+}
+
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -50,7 +55,7 @@ builder.Services.AddAuthentication(x =>
     x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(new byte[1]),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
         ValidateIssuer = false,
         ValidateAudience = false
     };
