@@ -23,6 +23,8 @@
 
   <ItemGroup>
     <Folder Include="DB\Migrations\" />
+    <Folder Include="Models\DTO\" />
+    <Folder Include="Models\ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
