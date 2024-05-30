@@ -36,7 +36,7 @@ builder.Services.AddDbContext<AppDbContext>(ServiceLifetime.Scoped);
 
 var app = builder.Build();
 
-if(!app.Services.GetRequiredService<AppDbContext>().InitializeDatabase())
+if(!app.Services.GetRequiredService<IHost>().InitializeDatabase<AppDbContext>())
 {
     throw new Exception("Failed to initialize database.");
 }

@@ -3,12 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FantasyGame.Extensions;
 
-public static class AppDbContextExtensions
+public static class IHostExtensions
 {
-    public static bool InitializeDatabase(this AppDbContext context)
+    public static bool InitializeDatabase<TContext>(this IHost host) where TContext : DbContext
     {
         try
         {
+            using IServiceScope scope = host.Services.CreateScope();
+
+            TContext? context = scope.ServiceProvider.GetRequiredService<TContext>();
             context.Database.EnsureCreated();
             context.Database.Migrate();
 

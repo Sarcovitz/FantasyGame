@@ -15,7 +15,7 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySql(ServerVersion.AutoDetect(_sqlConfig.ConnectionString));        
+        optionsBuilder.UseMySql(_sqlConfig.ConnectionString, ServerVersion.AutoDetect(_sqlConfig.ConnectionString));        
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
