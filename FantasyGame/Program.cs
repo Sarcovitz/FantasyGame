@@ -1,7 +1,25 @@
+using FantasyGame.Configs;
+using FantasyGame.DB;
+using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
+
 var builder = WebApplication.CreateBuilder(args);
 
-//CONTROLLERS
-builder.Services.AddControllers();
+if (!File.Exists("appsettings.json"))
+{
+    throw new Exception("appsettings.json file not found");
+}
+
+//CONFIGURATION
+builder.Configuration.AddJsonFile("appsettings.json", false, true);
+
+builder.Services.Configure<SqlConfig>(builder.Configuration.GetSection("SqlConfig"));
+
+//BASE
+builder.Services.AddControllers()
+    .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
 //SWAGGER
 builder.Services.AddEndpointsApiExplorer();
@@ -12,6 +30,7 @@ builder.Services.AddSwaggerGen();
 //REPOSITORIES
 
 //DATABASE
+builder.Services.AddDbContext<AppDbContext>(ServiceLifetime.Scoped);
 
 var app = builder.Build();
 
