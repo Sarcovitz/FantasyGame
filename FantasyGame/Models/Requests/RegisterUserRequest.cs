@@ -3,12 +3,12 @@
 namespace FantasyGame.Models.Requests;
 
 /// <summary>
-/// Represents input data necessary to register new user
+///     Represents input data necessary to register new user
 /// </summary>
 public class RegisterUserRequest
 {
     /// <summary>
-    /// Gets or sets Username value
+    ///     Gets or sets Username value
     /// </summary>
     [Required]
     [MaxLength(16)]
@@ -17,7 +17,7 @@ public class RegisterUserRequest
     public string? Username { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets Email value
+    ///     Gets or sets Email value
     /// </summary>
     [Required]
     [MaxLength(320)] // what internet says
@@ -26,14 +26,14 @@ public class RegisterUserRequest
     public string? Email { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets Password value
+    ///     Gets or sets Password value
     /// </summary>
     [Required]
     [MinLength(6)]
     public string? Password { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets Password2 value
+    ///     Gets or sets Password2 value
     /// </summary>
     [Required]
     [MinLength(6)]
