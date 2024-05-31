@@ -3,7 +3,7 @@
 namespace FantasyGame.Extensions;
 
 /// <summary>
-/// Extensions class for <see cref="ModelStateDictionary"/> class
+///     Extensions class for <see cref="ModelStateDictionary"/> class
 /// </summary>
 public static class ModelStateDictionaryExtensions
 {
