@@ -11,14 +11,16 @@ public class User
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public ulong Id { get; set; }
     [Required]
-    [StringLength(16, MinimumLength = 3)]
+    [MaxLength(16)]
+    [MinLength(3)]
     public string Username { get; set; } = string.Empty;
     [Required]
     [EmailAddress]
-    [StringLength(320)]
+    [MaxLength(320)]
+    [MinLength(6)]
     public string Email { get; set; } = string.Empty;
     [Required]
-    [StringLength(64)]
+    [MaxLength(64)]
     public string PasswordHash { get; set; } = string.Empty;
     [Required]
     public DateTime CreatedAt { get; set; } = DateTime.Now;
