@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FantasyGame.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyGame.Controllers;
 
@@ -6,6 +7,12 @@ namespace FantasyGame.Controllers;
 [Route("api/[controller]")]
 public class AuthController : Controller
 {
+    private readonly IAuthService _authService;
+    public AuthController(IAuthService authService)
+    {
+        _authService = authService;
+    }
+
     public IActionResult Index()
     {
         return View();
