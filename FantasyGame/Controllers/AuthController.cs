@@ -1,4 +1,5 @@
-﻿using FantasyGame.Services.Interfaces;
+﻿using FantasyGame.Models.Requests;
+using FantasyGame.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyGame.Controllers;
@@ -13,8 +14,18 @@ public class AuthController : Controller
         _authService = authService;
     }
 
-    public IActionResult Index()
+    [HttpPost]
+    [Route("register")]
+    public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest? body)
     {
-        return View();
+        if (body is null)
+            return BadRequest("Model cannot be null.");
+
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.GetErrors());
+
+        RegisterUserDTO result = await _authService.RegisterAsync(body);
+
+        return CreatedAtRoute("/user/me", result);
     }
 }

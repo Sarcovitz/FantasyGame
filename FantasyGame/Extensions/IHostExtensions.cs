@@ -1,5 +1,4 @@
-﻿using FantasyGame.DB;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace FantasyGame.Extensions;
 
