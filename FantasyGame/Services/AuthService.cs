@@ -1,5 +1,8 @@
-﻿namespace FantasyGame.Services;
+﻿using FantasyGame.Services.Interfaces;
 
-public class AuthService
+namespace FantasyGame.Services;
+
+public class AuthService : IAuthService
 {
+
 }

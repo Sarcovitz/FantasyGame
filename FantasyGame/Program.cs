@@ -1,6 +1,8 @@
 using FantasyGame.Configs;
 using FantasyGame.DB;
 using FantasyGame.Extensions;
+using FantasyGame.Services;
+using FantasyGame.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -30,6 +32,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //SERVICES
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 //REPOSITORIES
 
