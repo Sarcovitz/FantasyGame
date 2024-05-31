@@ -24,8 +24,8 @@
 
   <ItemGroup>
     <Folder Include="DB\Migrations\" />
-    <Folder Include="Models\DTO\" />
-    <Folder Include="Models\ViewModels\" />
+    <Folder Include="Models\DTOs\" />
+    <Folder Include="Models\Responses\" />
   </ItemGroup>
 
   <ItemGroup>
