@@ -13,6 +13,11 @@ namespace FantasyGame.Controllers;
 public class AuthController : Controller
 {
     private readonly IAuthService _authService;
+
+    /// <summary>
+    ///     Constructor for <see cref="AuthController"/>
+    /// </summary>
+    /// <param name="authService"> Injected <see cref="IAuthService"/> implementation </param>
     public AuthController(IAuthService authService)
     {
         _authService = authService;
