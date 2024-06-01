@@ -40,7 +40,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddDbContext<AppDbContext>(ServiceLifetime.Scoped);
 
 //AUTHENTICATION
-string? jwtSecret = builder.Configuration.GetValue<string>("JwtConfig:Key");
+string? jwtSecret = builder.Configuration.GetValue<string>("JwtConfig:Secret");
 if (string.IsNullOrEmpty(jwtSecret) || jwtSecret.Length != 32)
 {
     throw new Exception("JWT Key is null or empty or its length is different that 32 charaters.");
