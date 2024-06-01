@@ -9,10 +9,12 @@ public class RegisterUserResponse
     ///     Gets or sets Id.
     /// </summary>
     public ulong Id { get; set; } = 0;
+
     /// <summary>
     ///     Gets or sets Username.
     /// </summary>
     public string Username { get; set; } = string.Empty;
+
     /// <summary>
     ///     Gets or sets Email.
     /// </summary>
