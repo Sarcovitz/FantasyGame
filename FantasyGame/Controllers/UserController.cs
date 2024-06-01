@@ -6,8 +6,8 @@ namespace FantasyGame.Controllers;
 [Route("api/[controller]")]
 public class UserController : Controller
 {
-    public IActionResult Index()
-    {
-        return View();
-    }
+    //public IActionResult Index()
+    //{
+    //    return View();
+    //}
 }
