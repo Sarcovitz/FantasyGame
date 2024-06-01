@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FantasyGame.Controllers;
 
 /// <summary>
-///     Controller responsible for proces of user authentication process.
+///     Controller responsible for process of user authentication.
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
@@ -21,7 +21,7 @@ public class AuthController : Controller
     /// <summary>
     ///     Endpoint responsible for new user registration.
     /// </summary>
-    ///     <param name="body"> Input data for user registration</param>
+    ///     <param name="body"> Input data for new user registration</param>
     /// <returns></returns>
     [HttpPost]
     [Route("register")]
