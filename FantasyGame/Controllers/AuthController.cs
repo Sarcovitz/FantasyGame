@@ -1,9 +1,13 @@
-﻿using FantasyGame.Models.Requests;
+﻿using FantasyGame.Extensions;
+using FantasyGame.Models.Requests;
 using FantasyGame.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyGame.Controllers;
 
+/// <summary>
+///     Controller responsible for proces of user authentication process.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : Controller
@@ -14,6 +18,11 @@ public class AuthController : Controller
         _authService = authService;
     }
 
+    /// <summary>
+    ///     Endpoint responsible for new user registration.
+    /// </summary>
+    ///     <param name="body"> Input data for user registration</param>
+    /// <returns></returns>
     [HttpPost]
     [Route("register")]
     public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest? body)
