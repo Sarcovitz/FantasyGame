@@ -8,5 +8,5 @@ public class SqlConfig
     /// <summary>
     ///     Gets or sets connection string to SQL database
     /// </summary>
-    public string ConnectionString { get; } = string.Empty;
+    public string ConnectionString { get; set; } = string.Empty;
 }
