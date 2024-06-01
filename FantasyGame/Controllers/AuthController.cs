@@ -1,5 +1,6 @@
 ﻿using FantasyGame.Extensions;
 using FantasyGame.Models.Requests;
+using FantasyGame.Models.Responses;
 using FantasyGame.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,7 @@ public class AuthController : Controller
     ///     Constructor for <see cref="AuthController"/>
     /// </summary>
     /// <param name="authService"> Injected <see cref="IAuthService"/> implementation </param>
-    public AuthController(IAuthService authService)
+    public AuthController(IAuthService authService) : base()
     {
         _authService = authService;
     }
@@ -30,7 +31,7 @@ public class AuthController : Controller
     /// <returns></returns>
     [HttpPost]
     [Route("register")]
-    public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest? body)
+    public async Task<IActionResult> RegisterNewUserAsync([FromBody] RegisterUserRequest? body)
     {
         if (body is null)
             return BadRequest("Model cannot be null.");
@@ -38,8 +39,8 @@ public class AuthController : Controller
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrors());
 
-        RegisterUserDTO result = await _authService.RegisterAsync(body);
+        RegisterUserResponse result = await _authService.RegisterNewUserAsync(body);
 
-        return CreatedAtRoute("/user/me", result);
+        return Created("", result); //TODO created location
     }
 }
