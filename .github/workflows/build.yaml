@@ -6,6 +6,7 @@ on:
       - master
       - staging
       - fork
+  workflow_dispatch:
 
 jobs:
 
