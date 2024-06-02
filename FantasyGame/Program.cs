@@ -1,6 +1,7 @@
 using FantasyGame.Configs;
 using FantasyGame.DB;
 using FantasyGame.Extensions;
+using FantasyGame.Models.Middlewares;
 using FantasyGame.Services;
 using FantasyGame.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -71,6 +72,9 @@ if(!app.Services.GetRequiredService<IHost>().InitializeDatabase<AppDbContext>())
 {
     throw new Exception("Failed to initialize database.");
 }
+
+//MIDDLEWARES
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
