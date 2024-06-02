@@ -1,21 +1,6 @@
 name: .NET Build Application
 
-on:
-  pull_request:
-    branches:
-      - master
-      - staging
-      - fork
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to deploy'
-        required: true
-        default: 'staging'
-        type: choice
-        options:
-          - staging
-          - production
+on: [workflow_dispatch]
 
 jobs:
 
