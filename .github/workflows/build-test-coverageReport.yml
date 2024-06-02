@@ -42,10 +42,10 @@ jobs:
     #   run: echo "<results></results>" > ./TestResults/coverage.cobertura.xml
 
     - name: Run tests with coverage
-      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResults/
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResult/
 
     - name: Generate HTML report
-      run: reportgenerator -reports:FantasyGameTests/TestResults/coverage.cobertura.xml -targetdir:FantasyGameTests/TestResults/CoverageReport -reporttypes:Html
+      run: reportgenerator -reports:./FantasyGameTests/TestResult/coverage.cobertura.xml -targetdir:./FantasyGameTests/TestResult/CoverageReport/ -reporttypes:Html
 
     - name: Upload coverage report
       uses: actions/upload-artifact@v3
