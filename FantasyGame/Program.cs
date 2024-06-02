@@ -34,6 +34,7 @@ builder.Services.AddSwaggerGen();
 
 //SERVICES
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICryptographyService, CryptographyService>();
 
 //REPOSITORIES
 
