@@ -33,14 +33,14 @@ public class AuthService : IAuthService
         {
             Username = registerForm.Username!,
             Email = registerForm.Email!,
-            PasswordHash = _cryptographyService.Sha256Hash(registerForm.Password!),
+            //PasswordHash = _cryptographyService.Sha256Hash(registerForm.Password!),
         };
 
         newUser = await _userRepository.CreateAsync(newUser);
-        bool emailSendingResult = _emailService.SendAccountConfirmationEmail(newUser);
+       // bool emailSendingResult = _emailService.SendAccountConfirmationEmail(newUser);
 
-        if (!emailSendingResult)
-            throw new Exception($"Account has been created but confirmation link could not be sent, please contact support.");
+        //if (!emailSendingResult)
+            //throw new Exception($"Account has been created but confirmation link could not be sent, please contact support.");
 
         var result = new RegisterUserResponse()
         {
