@@ -33,7 +33,7 @@ public class AuthService : IAuthService
         {
             Username = registerForm.Username!,
             Email = registerForm.Email!,
-            Password = _cryptographyService.Sha256Hash(registerForm.Password!),
+            PasswordHash = _cryptographyService.Sha256Hash(registerForm.Password!),
         };
 
         newUser = await _userRepository.CreateAsync(newUser);
@@ -42,7 +42,7 @@ public class AuthService : IAuthService
         if (!emailSendingResult)
             throw new Exception($"Account has been created but confirmation link could not be sent, please contact support.");
 
-        var result = new RegisterUserDTO()
+        var result = new RegisterUserResponse()
         {
             Id = newUser.Id,
             Username = newUser.Username,
