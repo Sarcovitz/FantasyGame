@@ -2,6 +2,8 @@ using FantasyGame.Configs;
 using FantasyGame.DB;
 using FantasyGame.Extensions;
 using FantasyGame.Models.Middlewares;
+using FantasyGame.Repositories;
+using FantasyGame.Repositories.Interfaces;
 using FantasyGame.Services;
 using FantasyGame.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -37,6 +39,10 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICryptographyService, CryptographyService>();
 
 //REPOSITORIES
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+//MIDDLEWARES SERVICES
+builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 
 //DATABASE
 builder.Services.AddDbContext<AppDbContext>(ServiceLifetime.Scoped);
