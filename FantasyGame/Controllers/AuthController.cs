@@ -41,6 +41,6 @@ public class AuthController : Controller
 
         RegisterUserResponse result = await _authService.RegisterNewUserAsync(body);
 
-        return Created("", result); //TODO created location
+        return Ok(result);
     }
 }
