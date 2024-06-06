@@ -29,6 +29,11 @@ public class LoggerConfig
     ///     Gets or sets SyslogLoggerConfig.
     /// </summary>
     public SyslogLoggerConfig? SyslogLoggerConfig { get; set; } = null;
+
+    /// <summary>
+    ///     Gets or sets UseDbLogger.
+    /// </summary>
+    public bool UseDbLogger { get; set; } = false;
 }
 
 /// <summary>
