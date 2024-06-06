@@ -1,4 +1,5 @@
 ﻿using FantasyGame.Configs;
+using FantasyGame.Enums;
 using FantasyGame.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Runtime.CompilerServices;
@@ -38,36 +39,29 @@ public class LoggerService : ILoggerService
     }
 
     public void Debug(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-    {
-        throw new NotImplementedException();
-    }
+        => LogMessage(LogSeverity.DEBUG, message, file, method, line);
 
     public void Error(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-    {
-        throw new NotImplementedException();
-    }
+        => LogMessage(LogSeverity.ERROR, message, file, method, line);
 
     public void Fatal(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-    {
-        throw new NotImplementedException();
-    }
+        => LogMessage(LogSeverity.FATAL, message, file, method, line);
 
     public void Info(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-    {
-        throw new NotImplementedException();
-    }
+        => LogMessage(LogSeverity.INFO, message, file, method, line);
 
     public void Trace(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-    {
-        throw new NotImplementedException();
-    }
+        => LogMessage(LogSeverity.TRACE, message, file, method, line);
 
     public void Warn(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-    {
-        throw new NotImplementedException();
-    }
+        => LogMessage(LogSeverity.WARN, message, file, method, line);
 
     //
     //  OUT OF INTERFACE
     //
+
+    private void LogMessage(LogSeverity logLevel, string message, string file, string method, int line)
+    {
+
+    }
 }
