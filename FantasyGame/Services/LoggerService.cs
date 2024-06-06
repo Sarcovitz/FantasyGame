@@ -62,6 +62,39 @@ public class LoggerService : ILoggerService
 
     private void LogMessage(LogSeverity logLevel, string message, string file, string method, int line)
     {
+        string logMessageBase = $"{file} {method} {line} {message}";
+
+        if(_config.UseConsoleLogger)
+        {
+            LogToConsole(logMessageBase);
+        }
+
+        if(_config.UseFileLogger)
+        {
+            LogToFile(logMessageBase);            
+        }
+
+        if(_config.UseSyslogLogger)
+        {
+            LogToSyslog(logMessageBase); 
+        }
+    }
+
+    private void LogToConsole(string message)
+    {
+        string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} {message}";
+
+        Console.WriteLine(log);
+    }
+    
+    private void LogToFile(string message)
+    {
+        string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} {message}";
+    }
+    
+    private void LogToSyslog(string message)
+    {
+        string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} {message}";
 
     }
 }
