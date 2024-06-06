@@ -24,6 +24,9 @@ builder.Configuration.AddJsonFile("appsettings.json", false, true);
 
 builder.Services.Configure<SqlConfig>(builder.Configuration.GetSection("SqlConfig"));
 
+//LOGGER
+builder.Services.AddSingleton<ILoggerService, LoggerService>();
+
 //BASE
 builder.Services.AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
