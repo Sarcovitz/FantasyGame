@@ -27,7 +27,7 @@ builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfi
 builder.Services.Configure<SqlConfig>(builder.Configuration.GetSection("SqlConfig"));
 
 //LOGGER
-builder.Services.AddSingleton<ILoggerService, LoggerService>();
+builder.Services.AddScoped<ILoggerService, LoggerService>();
 
 //BASE
 builder.Services.AddControllers()
