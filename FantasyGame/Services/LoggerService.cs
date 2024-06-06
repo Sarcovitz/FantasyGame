@@ -37,9 +37,37 @@ public class LoggerService : ILoggerService
         }
     }
 
-    public void Info(string message, [CallerFilePath]string file = "", [CallerMemberName]string memberName = "", [CallerLineNumber]int lineNumber = 0)
+    public void Debug(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
     {
-        Console.Write($"{message}, {file}, {memberName}, {lineNumber}");
-        Console.WriteLine(_fileLoggerConfig.FileLoggerPath);
+        throw new NotImplementedException();
     }
+
+    public void Error(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Fatal(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Info(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Trace(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Warn(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
+    {
+        throw new NotImplementedException();
+    }
+
+    //
+    //  OUT OF INTERFACE
+    //
 }
