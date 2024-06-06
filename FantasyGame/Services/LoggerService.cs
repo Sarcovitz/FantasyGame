@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace FantasyGame.Services;
 
-public class LoggerService : ILoggerService
+public class LoggerService : ILoggerService, IDisposable
 {
     private readonly LoggerConfig _config;
 
@@ -40,6 +40,11 @@ public class LoggerService : ILoggerService
 
     public void Debug(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
         => LogMessage(LogSeverity.DEBUG, message, file, method, line);
+
+    public void Dispose()
+    {
+        throw new NotImplementedException();
+    }
 
     public void Error(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
         => LogMessage(LogSeverity.ERROR, message, file, method, line);
