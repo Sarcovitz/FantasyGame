@@ -102,4 +102,14 @@ public class LoggerService : ILoggerService, IDisposable
         string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} {message}";
 
     }
+
+    #region IDisposable
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+        _udpClient?.Dispose();
+    }
+
+    #endregion IDisposable
 }
