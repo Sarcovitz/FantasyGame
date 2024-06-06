@@ -8,6 +8,7 @@ namespace FantasyGame.DB;
 
 public class AppDbContext : DbContext
 {
+    public DbSet<LogEntry> LogEntries { get; set; }
     public DbSet<User> Users { get; set; }
 
     private readonly SqlConfig _sqlConfig;
@@ -24,6 +25,11 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        EntityTypeBuilder<LogEntry> logEntry = modelBuilder.Entity<LogEntry>();
+        logEntry.ToTable("Logs");
+        logEntry.Property(x => x.Id)
+            .HasDefaultValueSql("UUID()");
+
         EntityTypeBuilder<User> user = modelBuilder.Entity<User>();
         user.ToTable("Users");
 
