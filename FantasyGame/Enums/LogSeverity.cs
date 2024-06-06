@@ -3,7 +3,7 @@
 /// <summary>
 ///     Defines logging severity levels.
 /// </summary>
-public enum LogLevel
+public enum LogSeverity
 {
     /// <summary>
     ///     Not used for writing log messages. Indicates undefined value.
