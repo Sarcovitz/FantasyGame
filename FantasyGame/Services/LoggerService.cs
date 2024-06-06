@@ -1,5 +1,7 @@
 ﻿using FantasyGame.Configs;
+using FantasyGame.DB;
 using FantasyGame.Enums;
+using FantasyGame.Models.Entities;
 using FantasyGame.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Net.Sockets;
@@ -10,6 +12,7 @@ namespace FantasyGame.Services;
 
 public class LoggerService : ILoggerService, IDisposable
 {
+    private readonly AppDbContext _context;
     private readonly LoggerConfig _config;
 
     private readonly FileLoggerConfig _fileLoggerConfig = new();
@@ -17,9 +20,10 @@ public class LoggerService : ILoggerService, IDisposable
 
     private readonly UdpClient _udpClient = new();
 
-    public LoggerService(IOptions<LoggerConfig> config)
+    public LoggerService(AppDbContext context, IOptions<LoggerConfig> config)
     {
         _config = config.Value;
+        _context = context; 
 
         if (_config.UseFileLogger)
         {
@@ -83,6 +87,11 @@ public class LoggerService : ILoggerService, IDisposable
         {
             LogToSyslog(logMessageBase);
         }
+        
+        if (_config.UseDbLogger)
+        {
+            LogToDatabase(logLevel, logMessageBase);
+        }
     }
 
     private void LogToConsole(string message)
@@ -125,7 +134,32 @@ public class LoggerService : ILoggerService, IDisposable
         catch { }
     }
 
-    // TODO: LogToDb method
+    private void LogToDatabase(LogSeverity logLevel, string message)
+    {
+        try
+        {
+            LogEntry log = new()
+            {
+                Id = Guid.NewGuid(),
+                Date = DateTime.UtcNow,
+                Message = message,
+                Severity = logLevel,
+            };
+
+            int result = 0;
+            int currentAttempt = 0;    
+            int maxAttempts = 5;
+            do
+            {
+                currentAttempt++;
+                _context.LogEntries.Add(log);
+                result = _context.SaveChanges();
+            }
+            while (result < 1 || currentAttempt <= maxAttempts);
+
+        }
+        catch { }
+    }
 
     #endregion Non-interface
 
