@@ -28,7 +28,7 @@ public class AuthController : Controller
     ///     Endpoint responsible for new user registration.
     /// </summary>
     ///     <param name="body"> Input data for new user registration</param>
-    /// <returns></returns>
+    /// <returns>A task with <see cref="IActionResult"/> containing <see cref="RegisterUserResponse"/></returns>
     [HttpPost]
     [Route("register")]
     public async Task<IActionResult> RegisterNewUserAsync([FromBody] RegisterUserRequest? body)
