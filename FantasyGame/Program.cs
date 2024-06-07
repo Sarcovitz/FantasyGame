@@ -22,7 +22,12 @@ if (!File.Exists("appsettings.json"))
 //CONFIGURATION
 builder.Configuration.AddJsonFile("appsettings.json", false, true);
 
+builder.Services.Configure<LoggerConfig>(builder.Configuration.GetSection("LoggerConfig"));
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 builder.Services.Configure<SqlConfig>(builder.Configuration.GetSection("SqlConfig"));
+
+//LOGGER
+builder.Services.AddScoped<ILoggerService, LoggerService>();
 
 //BASE
 builder.Services.AddControllers()
