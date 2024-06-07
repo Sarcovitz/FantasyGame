@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <Folder Include="ControllersTests\" />
+    <Folder Include="ExtensionsTests\" />
     <Folder Include="ServicesTests\" />
     <Folder Include="RepositoriesTests\" />
   </ItemGroup>
