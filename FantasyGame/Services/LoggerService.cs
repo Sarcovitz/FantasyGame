@@ -1,25 +1,24 @@
 ﻿using FantasyGame.Configs;
+using FantasyGame.DB;
 using FantasyGame.Enums;
+using FantasyGame.Models.Entities;
 using FantasyGame.Services.Interfaces;
 using Microsoft.Extensions.Options;
-using System.Net.Sockets;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace FantasyGame.Services;
 
-public class LoggerService : ILoggerService, IDisposable
+public class LoggerService : ILoggerService
 {
+    private readonly AppDbContext _context;
     private readonly LoggerConfig _config;
 
     private readonly FileLoggerConfig _fileLoggerConfig = new();
-    private readonly SyslogLoggerConfig _syslogLoggerConfig = new();
 
-    private readonly UdpClient _udpClient = new();
-
-    public LoggerService(IOptions<LoggerConfig> config)
+    public LoggerService(AppDbContext context, IOptions<LoggerConfig> config)
     {
         _config = config.Value;
+        _context = context; 
 
         if (_config.UseFileLogger)
         {
@@ -29,16 +28,6 @@ public class LoggerService : ILoggerService, IDisposable
             }
 
             _fileLoggerConfig = _config.FileLoggerConfig;
-        }
-
-        if (_config.UseSyslogLogger)
-        {
-            if (_config.SyslogLoggerConfig is null)
-            {
-                throw new Exception("Cannot configure SyslogLogger - config is null.");
-            }
-
-            _syslogLoggerConfig = _config.SyslogLoggerConfig;
         }
     }
 
@@ -67,75 +56,83 @@ public class LoggerService : ILoggerService, IDisposable
     
     private void LogMessage(LogSeverity logLevel, string message, string file, string method, int line)
     {
+        file = Path.GetFileName(file);
         string logMessageBase = $"{file} {method} {line} {message}";
 
         if (_config.UseConsoleLogger)
         {
-            LogToConsole(logMessageBase);
+            LogToConsole(logLevel, logMessageBase);
         }
 
         if (_config.UseFileLogger)
         {
-            LogToFile(logMessageBase);
+            LogToFile(logLevel, logMessageBase);
         }
-
-        if (_config.UseSyslogLogger)
+        
+        if (_config.UseDbLogger)
         {
-            LogToSyslog(logMessageBase);
+            LogToDatabase(logLevel, logMessageBase, file, method, line);
         }
     }
 
-    private void LogToConsole(string message)
+    private void LogToConsole(LogSeverity logLevel, string message)
     {
         try
         {
-            string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} {message}";
+            string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} [{logLevel}] {message}";
 
             Console.WriteLine(log);
         }
         catch { }
     }
 
-    private void LogToFile(string message)
+    private void LogToFile(LogSeverity logLevel, string message)
     {
         try
         {
-            string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} {message}";
-            if (File.Exists(_fileLoggerConfig.FileLoggerPath))
+            string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} [{logLevel}] {message}{Environment.NewLine}";
+            string path = _fileLoggerConfig.FileLoggerPath + $"\\logfile_{DateTime.UtcNow:yyyy-MM-dd}.log";
+            if (File.Exists(path))
             {
-                File.AppendAllText(_fileLoggerConfig.FileLoggerPath, log);
+                File.AppendAllText(path, log);
             }
             else
             {
-                File.Create(_fileLoggerConfig.FileLoggerPath);
+                File.Create(path).Close();
+                File.AppendAllText(path, log);
             }
         }
         catch { }
     }
 
-    private void LogToSyslog(string message)
+    private void LogToDatabase(LogSeverity logLevel, string message, string file, string method, int line)
     {
         try
         {
-            string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} {message}";
+            LogEntry log = new()
+            {
+                Id = Guid.NewGuid(),
+                Date = DateTime.UtcNow,
+                Severity = logLevel,
+                File = file,
+                Method = method,
+                Line = line,
+                Message = message,
+            };
 
-            byte[] data = Encoding.UTF8.GetBytes(log);
-            _udpClient.Send(data, data.Length, _syslogLoggerConfig.ServerHostname, _syslogLoggerConfig.ServerPort);
+            int result = 0;
+            int currentAttempt = 0;    
+            int maxAttempts = 5;
+            do
+            {
+                currentAttempt++;
+                _context.LogEntries.Add(log);
+                result = _context.SaveChanges();
+            }
+            while (result < 1 && currentAttempt <= maxAttempts);
         }
         catch { }
     }
 
-    // TODO: LogToDb method
-
     #endregion Non-interface
-
-    #region IDisposable
-
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
-        _udpClient?.Dispose();
-    }
-
-    #endregion IDisposable
 }
