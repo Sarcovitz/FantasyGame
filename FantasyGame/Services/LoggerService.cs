@@ -15,7 +15,6 @@ public class LoggerService : ILoggerService
 
     private readonly FileLoggerConfig _fileLoggerConfig = new();
 
-
     public LoggerService(AppDbContext context, IOptions<LoggerConfig> config)
     {
         _config = config.Value;
