@@ -1,20 +1,12 @@
-name: .NET
+name: .NET workflow
 
 on:
-  push:
-    branches: 
-      - master
-      - staging
-      - fork
   pull_request:
     branches:
       - master
-      - staging
-      - fork
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
