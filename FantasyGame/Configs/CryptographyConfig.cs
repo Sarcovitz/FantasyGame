@@ -18,5 +18,5 @@ public class CryptographyConfig
     /// <summary>
     ///     Gets or sets HashSalt
     /// </summary>
-    public string HashSalt {  get; set; } = string.Empty;
+    public string HashSalt { get; set; } = string.Empty;
 }
