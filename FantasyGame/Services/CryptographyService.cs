@@ -46,9 +46,17 @@ public class CryptographyService : ICryptographyService
         return Convert.ToBase64String(ms.ToArray());
     }
 
-    public string GetSHA256HashString(string input)
+    public string GetSHA256Hash(string input)
     {
-        throw new NotImplementedException();
+        byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(input));
+
+        StringBuilder builder = new();
+        foreach (byte b in bytes)
+        {
+            builder.Append(b.ToString("x2"));
+        }
+
+        return builder.ToString();
     }
 
     #endregion ICryptographyService
