@@ -48,6 +48,8 @@ public class CryptographyService : ICryptographyService
 
     public string GetSHA256Hash(string input)
     {
+        input += _cryptographyConfig.HashSalt;
+
         byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(input));
 
         StringBuilder builder = new();
