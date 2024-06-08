@@ -6,6 +6,13 @@ namespace FantasyGame.Services;
 
 public class CryptographyService : ICryptographyService
 {
+    private readonly CryptographyConfig _cryptographyConfig;
+
+    public CryptographyService(IOptions<CryptographyConfig> cryptographyConfig)
+    {
+        _cryptographyConfig = cryptographyConfig.Value;
+    }
+
     #region ICryptographyService
     public string AesDecrypt(string cipherText)
     {
