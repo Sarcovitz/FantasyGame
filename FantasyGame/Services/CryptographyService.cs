@@ -1,4 +1,6 @@
+using FantasyGame.Configs;
 using FantasyGame.Services.Interfaces;
+using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -17,10 +19,10 @@ public class CryptographyService : ICryptographyService
     public string AesDecrypt(string cipherText)
     {
         using Aes aes = Aes.Create();
-        aes.Key = Encoding.UTF8.GetBytes(key);
-        aes.IV = Encoding.UTF8.GetBytes(iv);
+        aes.Key = Encoding.UTF8.GetBytes(_cryptographyConfig.AesKey);
+        aes.IV = Encoding.UTF8.GetBytes(_cryptographyConfig.AesIV);
 
-        using var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+        using var decryptor = aes.CreateDecryptor();
         using var ms = new MemoryStream(Convert.FromBase64String(cipherText));
         using var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read);
         using var sr = new StreamReader(cs);
@@ -30,8 +32,9 @@ public class CryptographyService : ICryptographyService
     public string AesEncrypt(string input)
     {
         using Aes aes = Aes.Create();
-        aes.Key = Encoding.UTF8.GetBytes(key);
-        aes.IV = Encoding.UTF8.GetBytes(iv);
+        aes.Key = Encoding.UTF8.GetBytes(_cryptographyConfig.AesKey);
+        aes.IV = Encoding.UTF8.GetBytes(_cryptographyConfig.AesIV);
+        aes.Mode = CipherMode.CBC;
 
         using var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
         using var ms = new MemoryStream();
