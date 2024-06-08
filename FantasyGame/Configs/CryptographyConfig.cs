@@ -6,12 +6,12 @@
 public class CryptographyConfig
 {
     /// <summary>
-    ///     Gets or sets JWT Secret
+    ///     Gets or sets AesKey
     /// </summary>
     public string AesKey { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Gets or sets JWT Secret
+    ///     Gets or sets AesIV
     /// </summary>
     public string AesIV { get; set; } = string.Empty;
 }
