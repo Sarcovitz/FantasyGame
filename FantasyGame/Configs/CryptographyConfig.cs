@@ -14,4 +14,9 @@ public class CryptographyConfig
     ///     Gets or sets AesIV
     /// </summary>
     public string AesIV { get; set; } = string.Empty;
+
+    /// <summary>
+    ///     Gets or sets HashSalt
+    /// </summary>
+    public string HashSalt {  get; set; } = string.Empty;
 }
