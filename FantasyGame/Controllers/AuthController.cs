@@ -15,10 +15,10 @@ public class AuthController : Controller
 {
     private readonly IAuthService _authService;
 
-    /// <summary>
+    /// <summary>-
     ///     Constructor for <see cref="AuthController"/>
     /// </summary>
-    /// <param name="authService"> Injected <see cref="IAuthService"/> implementation </param>
+    /// <param name="authService"> Injected <see cref="IAuthService"/> implementation.</param>
     public AuthController(IAuthService authService) : base()
     {
         _authService = authService;
@@ -27,7 +27,7 @@ public class AuthController : Controller
     /// <summary>
     ///     Endpoint responsible for new user registration.
     /// </summary>
-    ///     <param name="body"> Input data for new user registration</param>
+    /// <param name="body"> Input data for new user registration.</param>
     /// <returns>A task with <see cref="IActionResult"/> containing <see cref="RegisterUserResponse"/></returns>
     [HttpPost]
     [Route("register")]
