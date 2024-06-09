@@ -13,7 +13,7 @@ public class EmailConfig
     /// <summary>
     ///     Gets or sets SmtpPort.
     /// </summary>-
-    public string SmtpPort { get; set; } = string.Empty;
+    public int SmtpPort { get; set; } = 0;
 
     /// <summary>
     ///     Gets or sets SmtpUsername.
