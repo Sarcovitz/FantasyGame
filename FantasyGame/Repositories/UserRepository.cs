@@ -35,7 +35,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            throw new DbCreateException("User creation failed.", ex);
+            throw new DbCreateException($"User creation failed. Inner message: {ex.Message}");
         }
 
         return user;
