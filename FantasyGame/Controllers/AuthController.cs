@@ -15,7 +15,7 @@ public class AuthController : Controller
 {
     private readonly IAuthService _authService;
 
-    /// <summary>-
+    /// <summary>
     ///     Constructor for <see cref="AuthController"/>
     /// </summary>
     /// <param name="authService"> Injected <see cref="IAuthService"/> implementation.</param>
@@ -39,7 +39,7 @@ public class AuthController : Controller
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrors());
 
-        RegisterUserResponse? result = await _authService.RegisterNewUserAsync(body);
+        RegisterUserResponse result = await _authService.RegisterNewUserAsync(body);
 
         return Ok(result);
     }
