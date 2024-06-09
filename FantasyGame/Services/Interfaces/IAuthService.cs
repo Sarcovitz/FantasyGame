@@ -5,5 +5,5 @@ namespace FantasyGame.Services.Interfaces;
 
 public interface IAuthService
 {
-    public Task<RegisterUserResponse> RegisterNewUserAsync(RegisterUserRequest registerForm);
+    public Task<RegisterUserResponse?> RegisterNewUserAsync(RegisterUserRequest registerForm);
 }

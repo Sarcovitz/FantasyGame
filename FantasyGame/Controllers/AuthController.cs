@@ -39,7 +39,7 @@ public class AuthController : Controller
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrors());
 
-        RegisterUserResponse result = await _authService.RegisterNewUserAsync(body);
+        RegisterUserResponse? result = await _authService.RegisterNewUserAsync(body);
 
         return Ok(result);
     }

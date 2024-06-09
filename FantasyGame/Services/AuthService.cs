@@ -10,15 +10,20 @@ namespace FantasyGame.Services;
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
+    private readonly ICryptographyService _cryptographyService;
 
-    public AuthService(IUserRepository userRepository)
+    public AuthService(IUserRepository userRepository, ICryptographyService cryptographyService)
     {
         _userRepository = userRepository;
+        _cryptographyService = cryptographyService;
     }
 
-    public async Task<RegisterUserResponse> RegisterNewUserAsync(RegisterUserRequest registerForm)
+    public async Task<RegisterUserResponse?> RegisterNewUserAsync(RegisterUserRequest registerForm)
     {
-        if (registerForm.Password != registerForm.Password2)
+        string password1 = _cryptographyService.AesDecrypt(registerForm.Password!);
+        string password2 = _cryptographyService.AesDecrypt(registerForm.Password2!);
+
+        if (password1 != password2)
             throw new ArgumentException("Supplied paswords are not equal.");
 
         User? user = await _userRepository.GetByUsernameAsync(registerForm.Username!);
