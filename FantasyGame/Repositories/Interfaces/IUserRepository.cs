@@ -1,4 +1,5 @@
 ﻿using FantasyGame.Models.Entities;
+using FantasyGame.Exceptions;
 
 namespace FantasyGame.Repositories.Interfaces;
 
@@ -9,6 +10,7 @@ public interface IUserRepository
     /// </summary>
     /// <param name="user"> <see cref="User"/> entity to create.</param>
     /// <returns>A task that represents created <see cref="User"/> entity.</returns>
+    /// <exception cref="DbCreateException"></exception>
     public Task<User> CreateAsync(User user);
 
     /// <summary>

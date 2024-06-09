@@ -1,6 +1,7 @@
 ﻿using FantasyGame.Configs;
 using FantasyGame.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Options;
 
@@ -20,7 +21,11 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySql(_sqlConfig.ConnectionString, ServerVersion.AutoDetect(_sqlConfig.ConnectionString));        
+        optionsBuilder.UseMySql(_sqlConfig.ConnectionString, ServerVersion.AutoDetect(_sqlConfig.ConnectionString), options =>
+            {
+                options.EnableStringComparisonTranslations();
+            }
+        );
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

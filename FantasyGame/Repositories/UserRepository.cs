@@ -1,4 +1,5 @@
 ﻿using FantasyGame.DB;
+using FantasyGame.Exceptions;
 using FantasyGame.Models.Entities;
 using FantasyGame.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -23,8 +24,19 @@ public class UserRepository : IUserRepository
 
     public async Task<User> CreateAsync(User user)
     {
-        await _context.Users.AddAsync(user);
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.Users.AddAsync(user);
+            int result = await _context.SaveChangesAsync();
+            if (result == 0)
+            {
+                throw new Exception("User create operation failed with SaveChangesAsync result = 0");
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new DbCreateException($"User creation failed. Inner message: {ex.Message}");
+        }
 
         return user;
     }
