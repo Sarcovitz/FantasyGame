@@ -23,6 +23,7 @@ if (!File.Exists("appsettings.json"))
 builder.Configuration.AddJsonFile("appsettings.json", false, true);
 
 builder.Services.Configure<CryptographyConfig>(builder.Configuration.GetSection("CryptographyConfig"));
+builder.Services.Configure<EmailConfig>(builder.Configuration.GetSection("EmailConfig"));
 builder.Services.Configure<LoggerConfig>(builder.Configuration.GetSection("LoggerConfig"));
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 builder.Services.Configure<SqlConfig>(builder.Configuration.GetSection("SqlConfig"));
@@ -43,6 +44,7 @@ builder.Services.AddSwaggerGen();
 //SERVICES
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICryptographyService, CryptographyService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 //REPOSITORIES
 builder.Services.AddScoped<IUserRepository, UserRepository>();
