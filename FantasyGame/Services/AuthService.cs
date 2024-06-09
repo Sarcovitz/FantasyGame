@@ -33,7 +33,7 @@ public class AuthService : IAuthService
         {
             Username = registerForm.Username!,
             Email = registerForm.Email!,
-            //PasswordHash = _cryptographyService.Sha256Hash(registerForm.Password!),
+            PasswordHash = _cryptographyService.GetSHA256Hash(password1),
         };
 
         newUser = await _userRepository.CreateAsync(newUser);
