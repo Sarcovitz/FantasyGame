@@ -29,4 +29,9 @@ public class EmailConfig
     ///     Gets or sets SmtpEnableSSL.
     /// </summary>
     public bool SmtpEnableSSL { get; set; } = false;
+
+    /// <summary>
+    ///     Gets or sets AddressFrom.
+    /// </summary>
+    public string EmailAddressFrom {  get; set; } = string.Empty;
 }
