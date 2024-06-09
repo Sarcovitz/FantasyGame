@@ -9,13 +9,19 @@ namespace FantasyGame.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly IUserRepository _userRepository;
     private readonly ICryptographyService _cryptographyService;
+    private readonly IEmailService _emailService;
 
-    public AuthService(IUserRepository userRepository, ICryptographyService cryptographyService)
+    private readonly IUserRepository _userRepository;
+
+
+    public AuthService(IUserRepository userRepository, ICryptographyService cryptographyService, IEmailService emailService)
     {
         _userRepository = userRepository;
+        _emailService = emailService;
+
         _cryptographyService = cryptographyService;
+        
     }
 
     public async Task<RegisterUserResponse> RegisterNewUserAsync(RegisterUserRequest registerForm)
@@ -42,10 +48,10 @@ public class AuthService : IAuthService
         };
 
         newUser = await _userRepository.CreateAsync(newUser);
-       // bool emailSendingResult = _emailService.SendAccountConfirmationEmail(newUser);
+        bool emailSendingResult = _emailService.SendAccountConfirmationEmail(newUser);
 
-        //if (!emailSendingResult)
-            //throw new Exception($"Account has been created but confirmation link could not be sent, please contact support.");
+        if (!emailSendingResult)
+            throw new Exception($"Account has been created but confirmation link could not be sent, please contact support.");
 
         var result = new RegisterUserResponse()
         {
