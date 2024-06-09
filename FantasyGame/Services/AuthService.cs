@@ -18,7 +18,7 @@ public class AuthService : IAuthService
         _cryptographyService = cryptographyService;
     }
 
-    public async Task<RegisterUserResponse?> RegisterNewUserAsync(RegisterUserRequest registerForm)
+    public async Task<RegisterUserResponse> RegisterNewUserAsync(RegisterUserRequest registerForm)
     {
         string password1 = _cryptographyService.AesDecrypt(registerForm.Password!);
         string password2 = _cryptographyService.AesDecrypt(registerForm.Password2!);
