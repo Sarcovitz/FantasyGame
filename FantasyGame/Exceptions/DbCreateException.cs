@@ -1,6 +1,7 @@
 ﻿namespace FantasyGame.Exceptions;
+
 /// <summary>
-///     Exception thrown on database CREATE opeartion failrue.
+///     Exception thrown to send InternalServerError (500) HTTP Status - caused by database CREATE operation.
 /// </summary>
 [Serializable]
 public class DbCreateException : Exception
