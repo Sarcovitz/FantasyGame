@@ -28,8 +28,7 @@ public class EmailService : IEmailService
                 UserName = _emailConfig.SmtpUsername,
                 Password = _emailConfig.SmtpPassword
             },
-            EnableSsl = true
-            
+            EnableSsl = true            
         };
     }
 
