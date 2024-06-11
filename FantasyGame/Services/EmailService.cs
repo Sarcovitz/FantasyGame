@@ -1,11 +1,10 @@
 ﻿using FantasyGame.Configs;
 using FantasyGame.Models.Entities;
 using FantasyGame.Services.Interfaces;
-using System.Net.Mail;
-using System.Net;
-using System.Text;
 using Microsoft.Extensions.Options;
-using System.Security.Principal;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
 
 namespace FantasyGame.Services;
 
