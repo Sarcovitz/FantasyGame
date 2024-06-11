@@ -1,4 +1,5 @@
-﻿using FantasyGame.Models.Entities;
+﻿using FantasyGame.Exceptions;
+using FantasyGame.Models.Entities;
 using FantasyGame.Models.Requests;
 using FantasyGame.Models.Responses;
 using FantasyGame.Repositories.Interfaces;
@@ -64,7 +65,7 @@ public class AuthService : IAuthService
         }
         catch (Exception ex) 
         {
-            throw 
+            throw new InternalServerErrorStatusException($"Error while sending account confirmation e-mail. Inner message: {ex.Message}");
         }
 
         var result = new RegisterUserResponse()
