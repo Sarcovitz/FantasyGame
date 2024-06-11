@@ -1,19 +1,32 @@
 ﻿using FantasyGame.Configs;
 using FantasyGame.Models.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Options;
 
 namespace FantasyGame.DB;
 
+/// <summary>
+///     Main application database context.
+/// </summary>
 public class AppDbContext : DbContext
 {
+    /// <summary>
+    ///     Gets or sets LogEntries
+    /// </summary>
     public DbSet<LogEntry> LogEntries { get; set; }
+
+    /// <summary>
+    ///     Gets or sets Users
+    /// </summary>
     public DbSet<User> Users { get; set; }
 
     private readonly SqlConfig _sqlConfig;
 
+    /// <summary>
+    ///     Contructor for <see cref="AppDbContext"/>
+    /// </summary>
+    /// <param name="sqlConfig"><see cref="SqlConfig"/> injected object.</param>
     public AppDbContext(IOptions<SqlConfig> sqlConfig)
     {
         _sqlConfig = sqlConfig.Value;
