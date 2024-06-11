@@ -14,14 +14,12 @@ public class AuthService : IAuthService
 
     private readonly IUserRepository _userRepository;
 
-
     public AuthService(IUserRepository userRepository, ICryptographyService cryptographyService, IEmailService emailService)
     {
         _userRepository = userRepository;
         _emailService = emailService;
 
-        _cryptographyService = cryptographyService;
-        
+        _cryptographyService = cryptographyService;        
     }
 
     public async Task<RegisterUserResponse> RegisterNewUserAsync(RegisterUserRequest registerForm)
