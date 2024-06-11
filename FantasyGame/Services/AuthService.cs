@@ -61,7 +61,7 @@ public class AuthService : IAuthService
 
         try
         {
-            bool emailSendingResult = _emailService.SendAccountConfirmationEmail(newUser);
+            await _emailService.SendAccountConfirmationEmailAsync(newUser);
         }
         catch (Exception ex) 
         {

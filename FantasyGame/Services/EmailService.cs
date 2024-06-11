@@ -32,48 +32,36 @@ public class EmailService : IEmailService
         };
     }
 
-    public bool SendAccountConfirmationEmail(User user)
+    public async Task SendAccountConfirmationEmailAsync(User user)
     {
-        try 
-        { 
-            string userDataRaw = $"{user.Username}:{user.Id}:{user.Email}";
-            string userData = Convert.ToBase64String(Encoding.UTF8.GetBytes(userDataRaw));
-            string userDataUrlEncoded = WebUtility.UrlEncode(userData);
+        string userDataRaw = $"{user.Username}:{user.Id}:{user.Email}";
+        string userData = Convert.ToBase64String(Encoding.UTF8.GetBytes(userDataRaw));
+        string userDataUrlEncoded = WebUtility.UrlEncode(userData);
 
-            string confirmationUrl = @$"{"test"}/auth/confirm-account/{userDataUrlEncoded}"; // TODO DOMAIN FROM CONFIG
-            string filePath = @"./EmailTemplates/AccountConfirmationEmail.html";
+        string confirmationUrl = @$"{"test"}/auth/confirm-account/{userDataUrlEncoded}"; // TODO DOMAIN FROM CONFIG
+        string filePath = @"./EmailTemplates/AccountConfirmationEmail.html";
 
-            if (!File.Exists(filePath))
-            {
-                //TODO LOG
-                //TODO EXCEPTION
-                return false;
-            }
-
-            string messageContent = File.ReadAllText(filePath);
-            messageContent = messageContent.Replace("***USERNAME***", user.Username);
-            messageContent = messageContent.Replace("***LINK***", confirmationUrl);
-
-            MailAddress mailFrom = new(_emailConfig.EmailAddressFrom, "FANTASY GAME");
-            MailAddress mailTo = new(user.Email, user.Username.ToUpper());
-            MailMessage msg = new(mailFrom, mailTo)
-            {
-                SubjectEncoding = Encoding.UTF8,
-                BodyEncoding = Encoding.UTF8,
-                Subject = "E-mail address confirmation.",
-                Body = messageContent,
-                IsBodyHtml = true
-            };
-
-            _smtpClient.Send(msg);
-        }
-        catch
+        if (!File.Exists(filePath))
         {
-            //TODO add logs
-            //TODO remake to throw
-            return false;
+            //TODO LOG
+            //TODO EXCEPTION
         }
 
-        return true;
+        string messageContent = await File.ReadAllTextAsync(filePath);
+        messageContent = messageContent.Replace("***USERNAME***", user.Username);
+        messageContent = messageContent.Replace("***LINK***", confirmationUrl);
+
+        MailAddress mailFrom = new(_emailConfig.EmailAddressFrom, "FANTASY GAME");
+        MailAddress mailTo = new(user.Email, user.Username.ToUpper());
+        MailMessage msg = new(mailFrom, mailTo)
+        {
+            SubjectEncoding = Encoding.UTF8,
+            BodyEncoding = Encoding.UTF8,
+            Subject = "E-mail address confirmation.",
+            Body = messageContent,
+            IsBodyHtml = true
+        };
+
+        await Task.Run(() => _smtpClient.Send(msg));
     }
 }

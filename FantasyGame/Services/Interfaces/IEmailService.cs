@@ -4,5 +4,5 @@ namespace FantasyGame.Services.Interfaces;
 
 public interface IEmailService
 {
-    public bool SendAccountConfirmationEmail(User user);
+    public Task SendAccountConfirmationEmailAsync(User user);
 }
