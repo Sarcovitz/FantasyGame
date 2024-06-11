@@ -14,12 +14,23 @@ public class AuthService : IAuthService
 
     private readonly IUserRepository _userRepository;
 
-    public AuthService(IUserRepository userRepository, ICryptographyService cryptographyService, IEmailService emailService)
+    /// <summary>
+    ///     Constructor for <see cref="AuthService"/>
+    /// </summary>
+    /// <param name="cryptographyService"> Injected <see cref="ICryptographyService"/> implementation.</param>
+    /// <param name="emailService"> Injected <see cref="IEmailService"/> implementation.</param>
+    /// 
+    /// <param name="userRepository"> Injected <see cref="IUserRepository"/> implementation.</param>
+    public AuthService(
+        ICryptographyService cryptographyService, 
+        IEmailService emailService,
+
+        IUserRepository userRepository)
     {
-        _userRepository = userRepository;
+        _cryptographyService = cryptographyService;
         _emailService = emailService;
 
-        _cryptographyService = cryptographyService;        
+        _userRepository = userRepository;
     }
 
     public async Task<RegisterUserResponse> RegisterNewUserAsync(RegisterUserRequest registerForm)
