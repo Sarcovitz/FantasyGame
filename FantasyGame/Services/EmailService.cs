@@ -40,7 +40,7 @@ public class EmailService : IEmailService
         string userDataUrlEncoded = WebUtility.UrlEncode(userData);
 
         string confirmationUrl = @$"{"test"}/auth/confirm-account/{userDataUrlEncoded}"; // TODO DOMAIN FROM CONFIG
-        string filePath = @"./Misc/EmailTemplates/AccountConfirmationEmail.html";
+        string filePath = @"./EmailTemplates/AccountConfirmationEmail.html";
 
         if (!File.Exists(filePath))
         {
