@@ -57,10 +57,15 @@ public class AuthService : IAuthService
         };
 
         newUser = await _userRepository.CreateAsync(newUser);
-        bool emailSendingResult = _emailService.SendAccountConfirmationEmail(newUser);
 
-        if (!emailSendingResult)
-            throw new Exception($"Account has been created but confirmation link could not be sent, please contact support.");
+        try
+        {
+            bool emailSendingResult = _emailService.SendAccountConfirmationEmail(newUser);
+        }
+        catch (Exception ex) 
+        {
+            throw 
+        }
 
         var result = new RegisterUserResponse()
         {

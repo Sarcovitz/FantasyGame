@@ -34,42 +34,43 @@ public class EmailService : IEmailService
 
     public bool SendAccountConfirmationEmail(User user)
     {
-        string userDataRaw = $"{user.Username}:{user.Id}:{user.Email}";
-        string userData = Convert.ToBase64String(Encoding.UTF8.GetBytes(userDataRaw));
-        string userDataUrlEncoded = WebUtility.UrlEncode(userData);
+        try 
+        { 
+            string userDataRaw = $"{user.Username}:{user.Id}:{user.Email}";
+            string userData = Convert.ToBase64String(Encoding.UTF8.GetBytes(userDataRaw));
+            string userDataUrlEncoded = WebUtility.UrlEncode(userData);
 
-        string confirmationUrl = @$"{"test"}/auth/confirm-account/{userDataUrlEncoded}"; // TODO DOMAIN FROM CONFIG
-        string filePath = @"./EmailTemplates/AccountConfirmationEmail.html";
+            string confirmationUrl = @$"{"test"}/auth/confirm-account/{userDataUrlEncoded}"; // TODO DOMAIN FROM CONFIG
+            string filePath = @"./EmailTemplates/AccountConfirmationEmail.html";
 
-        if (!File.Exists(filePath))
-        {
-            //TODO LOG
-            //TODO EXCEPTION
-            return false;
-        }
+            if (!File.Exists(filePath))
+            {
+                //TODO LOG
+                //TODO EXCEPTION
+                return false;
+            }
 
-        string messageContent = File.ReadAllText(filePath);
-        messageContent = messageContent.Replace("***USERNAME***", user.Username);
-        messageContent = messageContent.Replace("***LINK***", confirmationUrl);
+            string messageContent = File.ReadAllText(filePath);
+            messageContent = messageContent.Replace("***USERNAME***", user.Username);
+            messageContent = messageContent.Replace("***LINK***", confirmationUrl);
 
-        MailAddress mailFrom = new(_emailConfig.EmailAddressFrom, "FANTASY GAME");
-        MailAddress mailTo = new(user.Email, user.Username.ToUpper());
-        MailMessage msg = new(mailFrom, mailTo)
-        {
-            SubjectEncoding = Encoding.UTF8,
-            BodyEncoding = Encoding.UTF8,
-            Subject = "E-mail address confirmation.",
-            Body = messageContent,
-            IsBodyHtml = true
-        };
+            MailAddress mailFrom = new(_emailConfig.EmailAddressFrom, "FANTASY GAME");
+            MailAddress mailTo = new(user.Email, user.Username.ToUpper());
+            MailMessage msg = new(mailFrom, mailTo)
+            {
+                SubjectEncoding = Encoding.UTF8,
+                BodyEncoding = Encoding.UTF8,
+                Subject = "E-mail address confirmation.",
+                Body = messageContent,
+                IsBodyHtml = true
+            };
 
-        try
-        {
             _smtpClient.Send(msg);
         }
         catch
         {
             //TODO add logs
+            //TODO remake to throw
             return false;
         }
 
