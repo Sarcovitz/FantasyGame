@@ -1,11 +1,10 @@
 ﻿using FantasyGame.Configs;
 using FantasyGame.Models.Entities;
 using FantasyGame.Services.Interfaces;
-using System.Net.Mail;
-using System.Net;
-using System.Text;
 using Microsoft.Extensions.Options;
-using System.Security.Principal;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
 
 namespace FantasyGame.Services;
 
@@ -32,7 +31,7 @@ public class EmailService : IEmailService
         };
     }
 
-    public bool SendAccountConfirmationEmail(User user)
+    public async Task SendAccountConfirmationEmailAsync(User user)
     {
         string userDataRaw = $"{user.Username}:{user.Id}:{user.Email}";
         string userData = Convert.ToBase64String(Encoding.UTF8.GetBytes(userDataRaw));
@@ -45,10 +44,9 @@ public class EmailService : IEmailService
         {
             //TODO LOG
             //TODO EXCEPTION
-            return false;
         }
 
-        string messageContent = File.ReadAllText(filePath);
+        string messageContent = await File.ReadAllTextAsync(filePath);
         messageContent = messageContent.Replace("***USERNAME***", user.Username);
         messageContent = messageContent.Replace("***LINK***", confirmationUrl);
 
@@ -63,16 +61,6 @@ public class EmailService : IEmailService
             IsBodyHtml = true
         };
 
-        try
-        {
-            _smtpClient.Send(msg);
-        }
-        catch
-        {
-            //TODO add logs
-            return false;
-        }
-
-        return true;
+        await Task.Run(() => _smtpClient.Send(msg));
     }
 }

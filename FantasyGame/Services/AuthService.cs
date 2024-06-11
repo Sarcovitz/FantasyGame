@@ -1,4 +1,5 @@
-﻿using FantasyGame.Models.Entities;
+﻿using FantasyGame.Exceptions;
+using FantasyGame.Models.Entities;
 using FantasyGame.Models.Requests;
 using FantasyGame.Models.Responses;
 using FantasyGame.Repositories.Interfaces;
@@ -14,14 +15,23 @@ public class AuthService : IAuthService
 
     private readonly IUserRepository _userRepository;
 
+    /// <summary>
+    ///     Constructor for <see cref="AuthService"/>
+    /// </summary>
+    /// <param name="cryptographyService"> Injected <see cref="ICryptographyService"/> implementation.</param>
+    /// <param name="emailService"> Injected <see cref="IEmailService"/> implementation.</param>
+    /// 
+    /// <param name="userRepository"> Injected <see cref="IUserRepository"/> implementation.</param>
+    public AuthService(
+        ICryptographyService cryptographyService, 
+        IEmailService emailService,
 
-    public AuthService(IUserRepository userRepository, ICryptographyService cryptographyService, IEmailService emailService)
+        IUserRepository userRepository)
     {
-        _userRepository = userRepository;
+        _cryptographyService = cryptographyService;
         _emailService = emailService;
 
-        _cryptographyService = cryptographyService;
-        
+        _userRepository = userRepository;
     }
 
     public async Task<RegisterUserResponse> RegisterNewUserAsync(RegisterUserRequest registerForm)
@@ -30,15 +40,15 @@ public class AuthService : IAuthService
         string password2 = _cryptographyService.AesDecrypt(registerForm.Password2!);
 
         if (password1 != password2)
-            throw new ArgumentException("Supplied paswords are not equal.");
+            throw new BadRequestStatusException("Supplied paswords are not equal.");
 
         User? user = await _userRepository.GetByUsernameAsync(registerForm.Username!);
         if (user is not null)
-            throw new DuplicateNameException("User with supplied username already exists.");
+            throw new ConflictStatusException("User with supplied username already exists.");
 
         user = await _userRepository.GetByEmailAsync(registerForm.Email!);
         if (user is not null)
-            throw new DuplicateNameException("User with supplied e-mail already exists.");
+            throw new ConflictStatusException("User with supplied e-mail already exists.");
 
         User newUser = new()
         {
@@ -48,10 +58,16 @@ public class AuthService : IAuthService
         };
 
         newUser = await _userRepository.CreateAsync(newUser);
-        bool emailSendingResult = _emailService.SendAccountConfirmationEmail(newUser);
 
-        if (!emailSendingResult)
-            throw new Exception($"Account has been created but confirmation link could not be sent, please contact support.");
+        try
+        {
+            await _emailService.SendAccountConfirmationEmailAsync(newUser);
+        }
+        catch (Exception ex) 
+        {
+            //TODO logs
+            throw new InternalServerErrorStatusException($"Error while sending account confirmation e-mail.");
+        }
 
         var result = new RegisterUserResponse()
         {
