@@ -34,4 +34,10 @@
     <None Include="C:\Users\User\source\repos\FantasyGame\FantasyGame\.editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="EmailTemplates\AccountConfirmationEmail.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
