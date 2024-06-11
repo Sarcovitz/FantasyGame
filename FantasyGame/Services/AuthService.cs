@@ -65,7 +65,8 @@ public class AuthService : IAuthService
         }
         catch (Exception ex) 
         {
-            throw new InternalServerErrorStatusException($"Error while sending account confirmation e-mail. Inner message: {ex.Message}");
+            //TODO logs
+            throw new InternalServerErrorStatusException($"Error while sending account confirmation e-mail.");
         }
 
         var result = new RegisterUserResponse()
