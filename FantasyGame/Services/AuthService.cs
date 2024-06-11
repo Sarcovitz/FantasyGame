@@ -40,15 +40,15 @@ public class AuthService : IAuthService
         string password2 = _cryptographyService.AesDecrypt(registerForm.Password2!);
 
         if (password1 != password2)
-            throw new ArgumentException("Supplied paswords are not equal.");
+            throw new BadRequestStatusException("Supplied paswords are not equal.");
 
         User? user = await _userRepository.GetByUsernameAsync(registerForm.Username!);
         if (user is not null)
-            throw new DuplicateNameException("User with supplied username already exists.");
+            throw new ConflictStatusException("User with supplied username already exists.");
 
         user = await _userRepository.GetByEmailAsync(registerForm.Email!);
         if (user is not null)
-            throw new DuplicateNameException("User with supplied e-mail already exists.");
+            throw new ConflictStatusException("User with supplied e-mail already exists.");
 
         User newUser = new()
         {
