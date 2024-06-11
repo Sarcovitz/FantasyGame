@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Misc\EmailTemplates\AccountConfirmationEmail.html">
+    <None Update="EmailTemplates\AccountConfirmationEmail.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
