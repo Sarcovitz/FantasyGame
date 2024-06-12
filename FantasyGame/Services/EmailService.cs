@@ -38,6 +38,8 @@ public class EmailService : IEmailService
         };
     }
 
+    #region IEmailService
+
     public async Task SendAccountConfirmationEmailAsync(User user)
     {
         string userDataRaw = $"{user.Username}:{user.Id}:{user.Email}";
@@ -70,4 +72,6 @@ public class EmailService : IEmailService
 
         await Task.Run(() => _smtpClient.Send(msg));
     }
+
+    #endregion IEmailService
 }
