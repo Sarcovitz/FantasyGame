@@ -17,23 +17,29 @@ public class AuthService : IAuthService
 
     private readonly IUserRepository _userRepository;
 
+    private readonly ILoggerService _logger;
+
     /// <summary>
-    ///     Constructor for <see cref="AuthService"/>
+    ///     Constructor for <see cref="AuthService"/>.
     /// </summary>
     /// <param name="cryptographyService"> Injected <see cref="ICryptographyService"/> implementation.</param>
     /// <param name="emailService"> Injected <see cref="IEmailService"/> implementation.</param>
     /// 
     /// <param name="userRepository"> Injected <see cref="IUserRepository"/> implementation.</param>
+    /// 
+    /// <param name="logger"> Injected <see cref="ILoggerService"/> implementation.</param>
     public AuthService(
         ICryptographyService cryptographyService, 
         IEmailService emailService,
 
-        IUserRepository userRepository)
+        IUserRepository userRepository,
+        ILoggerService logger)
     {
         _cryptographyService = cryptographyService;
         _emailService = emailService;
 
         _userRepository = userRepository;
+        _logger = logger;
     }
 
     #region IAuthService
@@ -44,7 +50,10 @@ public class AuthService : IAuthService
         string password2 = await _cryptographyService.AesDecryptAsync(registerForm.Password2!);
 
         if (password1 != password2)
+        {
+            
             throw new BadRequestStatusException("Supplied paswords are not equal.");
+        }
 
         User? user = await _userRepository.GetByUsernameAsync(registerForm.Username!);
         if (user is not null)
