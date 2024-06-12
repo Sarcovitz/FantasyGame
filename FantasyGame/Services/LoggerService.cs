@@ -8,6 +8,9 @@ using System.Runtime.CompilerServices;
 
 namespace FantasyGame.Services;
 
+/// <summary>
+///     Service responsible for logging informations. Implementation of <see cref="ILoggerService"/> interface.
+/// </summary>
 public class LoggerService : ILoggerService
 {
     private readonly AppDbContext _context;
@@ -15,6 +18,12 @@ public class LoggerService : ILoggerService
 
     private readonly FileLoggerConfig _fileLoggerConfig = new();
 
+    /// <summary>
+    ///     Constructor for <see cref="LoggerService"/>.
+    /// </summary>
+    /// <param name="context">Injected <see cref="AppDbContext"/>.</param>
+    /// <param name="config">Injected <see cref="LoggerConfig"/> object.</param>
+    /// <exception cref="Exception"></exception>
     public LoggerService(AppDbContext context, IOptions<LoggerConfig> config)
     {
         _config = config.Value;
