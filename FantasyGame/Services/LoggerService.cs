@@ -133,6 +133,14 @@ public class LoggerService : ILoggerService
         catch { }
     }
 
+    /// <summary>
+    ///     Method that prints log message to database.
+    /// </summary>
+    /// <param name="logLevel">Log severity of log message.</param>
+    /// <param name="message">Text of log message.</param>
+    /// <param name="file">File where log was executed.</param>
+    /// <param name="method">Method where log was executed.</param>
+    /// <param name="line">Line where log was executed.</param>
     private void LogToDatabase(LogSeverity logLevel, string message, string file, string method, int line)
     {
         try
