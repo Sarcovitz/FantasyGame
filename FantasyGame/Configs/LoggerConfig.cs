@@ -10,7 +10,7 @@ public class LoggerConfig
     /// <summary>
     ///     Gets or sets UseConsoleLogger.
     /// </summary>
-    public LogSeverity MinimalLogLevel { get; set; } = LogSeverity.TRACE;
+    public LogSeverity MinimalLogLevel { get; set; } = LogSeverity.DEBUG;
 
     /// <summary>
     ///     Gets or sets UseConsoleLogger.
