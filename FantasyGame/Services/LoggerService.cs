@@ -93,6 +93,11 @@ public class LoggerService : ILoggerService
         }
     }
 
+    /// <summary>
+    ///     Method that prints log message on console.
+    /// </summary>
+    /// <param name="logLevel">Log severity of log message.</param>
+    /// <param name="message">Text of log message.</param>
     private void LogToConsole(LogSeverity logLevel, string message)
     {
         try
