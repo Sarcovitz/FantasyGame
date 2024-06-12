@@ -38,10 +38,13 @@ public class UserRepository : IUserRepository
             {
                 throw new Exception("User create operation failed with SaveChangesAsync result = 0");
             }
+
+            _logger.Info("User successfully created.", user);
         }
         catch (Exception ex)
         {
-            throw new DbCreateException($"User creation failed. Inner message: {ex.Message}");
+            _logger.Error($"User creation failed. Inner message: {ex.Message}", user);
+            throw new DbCreateException($"User creation failed.");
         }
 
         return user;
