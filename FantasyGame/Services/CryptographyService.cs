@@ -16,7 +16,7 @@ public class CryptographyService : ICryptographyService
     }
 
     #region ICryptographyService
-    public string AesDecrypt(string cipherText)
+    public async Task<string> AesDecryptAsync(string cipherText)
     {
         using Aes aes = Aes.Create();
         aes.Key = Encoding.UTF8.GetBytes(_cryptographyConfig.AesKey);
@@ -26,10 +26,10 @@ public class CryptographyService : ICryptographyService
         using var ms = new MemoryStream(Convert.FromBase64String(cipherText));
         using var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read);
         using var sr = new StreamReader(cs);
-        return sr.ReadToEnd();
+        return await sr.ReadToEndAsync();
     }
 
-    public string AesEncrypt(string input)
+    public async Task<string> AesEncryptAsync(string input)
     {
         using Aes aes = Aes.Create();
         aes.Key = Encoding.UTF8.GetBytes(_cryptographyConfig.AesKey);
@@ -41,7 +41,7 @@ public class CryptographyService : ICryptographyService
         using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
         using (var sw = new StreamWriter(cs))
         {
-            sw.Write(input);
+            await sw.WriteAsync(input);
         }
         return Convert.ToBase64String(ms.ToArray());
     }
