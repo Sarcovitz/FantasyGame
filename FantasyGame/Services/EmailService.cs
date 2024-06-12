@@ -8,12 +8,19 @@ using System.Text;
 
 namespace FantasyGame.Services;
 
+/// <summary>
+///     Service responsible for sending e-mail messages. Implementation of <see cref="IEmailService"/> interface.
+/// </summary>
 public class EmailService : IEmailService
 {
     private readonly EmailConfig _emailConfig;
 
     private readonly SmtpClient _smtpClient;
 
+    /// <summary>
+    ///     Contructor for <see cref="EmailService"/>.
+    /// </summary>
+    /// <param name="emailConfig">Injected <see cref="EmailConfig"/> object.</param>
     public EmailService(IOptions<EmailConfig> emailConfig)
     {
         _emailConfig = emailConfig.Value;
