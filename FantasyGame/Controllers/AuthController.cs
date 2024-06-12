@@ -54,8 +54,8 @@ public class AuthController : Controller
         }
 
         RegisterUserResponse result = await _authService.RegisterNewUserAsync(body);
-        _logger.Debug("");
-
+        
+        _logger.Debug("Endpoint [api/auth/register] finished.", result);
         return Ok(result);
     }
 }
