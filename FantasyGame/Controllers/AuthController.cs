@@ -43,13 +43,13 @@ public class AuthController : Controller
 
         if (body is null)
         {
-            _logger.Trace("Body is null");
+            _logger.Debug("Body is null");
             return BadRequest("Model cannot be null.");
         }
 
         if (!ModelState.IsValid)
         {
-            _logger.Trace("ModelState is invalid");
+            _logger.Debug("ModelState is invalid");
             return BadRequest(ModelState.GetErrors());
         }
 

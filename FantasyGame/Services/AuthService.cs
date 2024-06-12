@@ -51,7 +51,7 @@ public class AuthService : IAuthService
 
         if (password1 != password2)
         {
-            
+            _logger.Trace("Supplied passwords are not identical");
             throw new BadRequestStatusException("Supplied paswords are not equal.");
         }
 
