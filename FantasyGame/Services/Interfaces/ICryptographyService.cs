@@ -5,6 +5,11 @@ namespace FantasyGame.Services.Interfaces;
 /// </summary>
 public interface ICryptographyService
 {
+    /// <summary>
+    ///     Function responsible for getting decrypted AES cipher value.
+    /// </summary>
+    /// <param name="cipherText">Input cipher <see cref="string"/> that should be decrypted.</param>
+    /// <returns>A <see cref="Task"/> with <see cref="string"/> - decrypted cipher value.</returns>
     public Task<string> AesDecryptAsync(string cipherText);
     public Task<string> AesEncryptAsync(string input);
 
