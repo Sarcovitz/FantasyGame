@@ -2,6 +2,9 @@
 
 namespace FantasyGame.Services.Interfaces;
 
+/// <summary>
+///     Interface for service responsible for logging informations.
+/// </summary>
 public interface ILoggerService
 {
     public void Trace(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0);
