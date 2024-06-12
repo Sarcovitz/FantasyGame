@@ -2,6 +2,9 @@
 
 namespace FantasyGame.Services.Interfaces;
 
+/// <summary>
+///     Interface for service responsible for sending e-mail messages.
+/// </summary>
 public interface IEmailService
 {
     /// <summary>
