@@ -1,10 +1,17 @@
-﻿namespace FantasyGame.Configs;
+﻿using FantasyGame.Enums;
+
+namespace FantasyGame.Configs;
 
 /// <summary>
 ///     Represents data necessary to perform general configuration of logging service.
 /// </summary>
 public class LoggerConfig
 {
+    /// <summary>
+    ///     Gets or sets UseConsoleLogger.
+    /// </summary>
+    public LogSeverity MinimalLogLevel { get; set; } = LogSeverity.TRACE;
+
     /// <summary>
     ///     Gets or sets UseConsoleLogger.
     /// </summary>
