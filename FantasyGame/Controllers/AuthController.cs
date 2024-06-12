@@ -15,13 +15,19 @@ public class AuthController : Controller
 {
     private readonly IAuthService _authService;
 
+    private readonly ILoggerService _logger;
+
     /// <summary>
     ///     Constructor for <see cref="AuthController"/>
     /// </summary>
-    /// <param name="authService"> Injected <see cref="IAuthService"/> implementation.</param>
-    public AuthController(IAuthService authService) : base()
+    /// <param name="authService">Injected <see cref="IAuthService"/> implementation.</param>
+    /// <param name="logger">Injected <see cref="ILoggerService"/> implementation.</param>
+    public AuthController(
+        IAuthService authService,
+        ILoggerService logger) : base()
     {
         _authService = authService;
+        _logger = logger;
     }
 
     /// <summary>
