@@ -86,6 +86,7 @@ public class LoggerService : ILoggerService
         if(obj is not null)
         {
             string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            logMessageBase += Environment.NewLine + "OBJECT:";
             logMessageBase += Environment.NewLine + serializedObject;
         }
 
