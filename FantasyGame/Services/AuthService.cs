@@ -36,8 +36,8 @@ public class AuthService : IAuthService
 
     public async Task<RegisterUserResponse> RegisterNewUserAsync(RegisterUserRequest registerForm)
     {
-        string password1 = _cryptographyService.AesDecrypt(registerForm.Password!);
-        string password2 = _cryptographyService.AesDecrypt(registerForm.Password2!);
+        string password1 = await _cryptographyService.AesDecryptAsync(registerForm.Password!);
+        string password2 = await _cryptographyService.AesDecryptAsync(registerForm.Password2!);
 
         if (password1 != password2)
             throw new BadRequestStatusException("Supplied paswords are not equal.");
