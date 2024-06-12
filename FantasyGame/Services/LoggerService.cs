@@ -4,6 +4,7 @@ using FantasyGame.Enums;
 using FantasyGame.Models.Entities;
 using FantasyGame.Services.Interfaces;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
 
 namespace FantasyGame.Services;
@@ -45,7 +46,7 @@ public class LoggerService : ILoggerService
     public void Debug(string message, object? obj = null, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
         => LogMessage(LogSeverity.DEBUG, message, file, method, line, obj);
     public void Error(string message, object? obj = null, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-    => LogMessage(LogSeverity.ERROR, message, file, method, line, obj);
+        => LogMessage(LogSeverity.ERROR, message, file, method, line, obj);
 
     public void Fatal(string message, object? obj = null, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
         => LogMessage(LogSeverity.FATAL, message, file, method, line, obj);
@@ -82,6 +83,11 @@ public class LoggerService : ILoggerService
 
         file = Path.GetFileName(file);
         string logMessageBase = $"{file} {method} {line} {message}";
+        if(obj is not null)
+        {
+            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            logMessageBase += Environment.NewLine + serializedObject;
+        }
 
         if (_config.UseConsoleLogger)
         {
