@@ -11,6 +11,12 @@ public interface ICryptographyService
     /// <param name="cipherText">Input cipher <see cref="string"/> that should be decrypted.</param>
     /// <returns>A <see cref="Task"/> with <see cref="string"/> - decrypted cipher value.</returns>
     public Task<string> AesDecryptAsync(string cipherText);
+
+    /// <summary>
+    ///     Function responsible for getting AES encrypted string value.
+    /// </summary>
+    /// <param name="input">Input <see cref="string"/> that should be encrypted.</param>
+    /// <returns>A <see cref="Task"/> with <see cref="string"/> - encrypted cipher text.</returns>
     public Task<string> AesEncryptAsync(string input);
 
     /// <summary>
