@@ -74,6 +74,11 @@ public class LoggerService : ILoggerService
     /// <exception cref="ArgumentException"></exception>
     private void LogMessage(LogSeverity logLevel, string message, string file, string method, int line)
     {
+        if(logLevel < _config.MinimalLogLevel)
+        {
+            return;
+        }
+
         file = Path.GetFileName(file);
         string logMessageBase = $"{file} {method} {line} {message}";
 
