@@ -54,9 +54,6 @@ public class LoggerService : ILoggerService
     public void Info(string message, object? obj = null, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
         => LogMessage(LogSeverity.INFO, message, file, method, line, obj);
 
-    public void Trace(string message, object? obj = null, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-        => LogMessage(LogSeverity.TRACE, message, file, method, line, obj);
-
     public void Warn(string message, object? obj = null, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
         => LogMessage(LogSeverity.WARN, message, file, method, line, obj);
 
