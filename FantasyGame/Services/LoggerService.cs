@@ -4,6 +4,7 @@ using FantasyGame.Enums;
 using FantasyGame.Models.Entities;
 using FantasyGame.Services.Interfaces;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
 
 namespace FantasyGame.Services;
@@ -42,39 +43,48 @@ public class LoggerService : ILoggerService
 
     #region ILoggerService
 
-    public void Debug(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-        => LogMessage(LogSeverity.DEBUG, message, file, method, line);
-    public void Error(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-    => LogMessage(LogSeverity.ERROR, message, file, method, line);
+    public void Debug(string message, object? obj = null, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
+        => LogMessage(LogSeverity.DEBUG, message, file, method, line, obj);
+    public void Error(string message, object? obj = null, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
+        => LogMessage(LogSeverity.ERROR, message, file, method, line, obj);
 
-    public void Fatal(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-        => LogMessage(LogSeverity.FATAL, message, file, method, line);
+    public void Fatal(string message, object? obj = null, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
+        => LogMessage(LogSeverity.FATAL, message, file, method, line, obj);
 
-    public void Info(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-        => LogMessage(LogSeverity.INFO, message, file, method, line);
+    public void Info(string message, object? obj = null, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
+        => LogMessage(LogSeverity.INFO, message, file, method, line, obj);
 
-    public void Trace(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-        => LogMessage(LogSeverity.TRACE, message, file, method, line);
-
-    public void Warn(string message, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
-        => LogMessage(LogSeverity.WARN, message, file, method, line);
+    public void Warn(string message, object? obj = null, [CallerFilePath] string file = "", [CallerMemberName] string method = "", [CallerLineNumber] int line = 0)
+        => LogMessage(LogSeverity.WARN, message, file, method, line, obj);
 
     #endregion ILoggerService
 
     #region Non-interface
-    
+
     /// <summary>
     ///     Method that is facade for logging to multiple targets.
     /// </summary>
     /// <param name="logLevel">Log severity of log message.</param>
     /// <param name="message">Text of log message.</param>
+    /// <param name="obj">Object to serialize</param>
     /// <param name="file">File where log was executed.</param>
     /// <param name="method">Method where log was executed.</param>
     /// <param name="line">Line where log was executed.</param>
     /// <exception cref="ArgumentException"></exception>
-    private void LogMessage(LogSeverity logLevel, string message, string file, string method, int line)
+    private void LogMessage(LogSeverity logLevel, string message, string file, string method, int line, object? obj = null)
     {
+        if(logLevel < _config.MinimalLogLevel)
+        {
+            return;
+        }
+
         file = Path.GetFileName(file);
+        if (obj is not null)
+        {
+            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            message += Environment.NewLine + "OBJECT:";
+            message += Environment.NewLine + serializedObject;
+        }
         string logMessageBase = $"{file} {method} {line} {message}";
 
         if (_config.UseConsoleLogger)
@@ -89,7 +99,7 @@ public class LoggerService : ILoggerService
         
         if (_config.UseDbLogger)
         {
-            LogToDatabase(logLevel, logMessageBase, file, method, line);
+            LogToDatabase(logLevel, message, file, method, line);
         }
     }
 
@@ -98,7 +108,7 @@ public class LoggerService : ILoggerService
     /// </summary>
     /// <param name="logLevel">Log severity of log message.</param>
     /// <param name="message">Text of log message.</param>
-    private void LogToConsole(LogSeverity logLevel, string message)
+    private static void LogToConsole(LogSeverity logLevel, string message)
     {
         try
         {

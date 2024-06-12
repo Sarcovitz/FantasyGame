@@ -15,13 +15,19 @@ public class AuthController : Controller
 {
     private readonly IAuthService _authService;
 
+    private readonly ILoggerService _logger;
+
     /// <summary>
     ///     Constructor for <see cref="AuthController"/>
     /// </summary>
-    /// <param name="authService"> Injected <see cref="IAuthService"/> implementation.</param>
-    public AuthController(IAuthService authService) : base()
+    /// <param name="authService">Injected <see cref="IAuthService"/> implementation.</param>
+    /// <param name="logger">Injected <see cref="ILoggerService"/> implementation.</param>
+    public AuthController(
+        IAuthService authService,
+        ILoggerService logger) : base()
     {
         _authService = authService;
+        _logger = logger;
     }
 
     /// <summary>
@@ -33,14 +39,23 @@ public class AuthController : Controller
     [Route("register")]
     public async Task<IActionResult> RegisterNewUserAsync([FromBody] RegisterUserRequest? body)
     {
+        _logger.Debug("Endpoint [api/auth/register] called.");
+
         if (body is null)
+        {
+            _logger.Debug("Body is null");
             return BadRequest("Model cannot be null.");
+        }
 
         if (!ModelState.IsValid)
+        {
+            _logger.Debug("ModelState is invalid");
             return BadRequest(ModelState.GetErrors());
+        }
 
         RegisterUserResponse result = await _authService.RegisterNewUserAsync(body);
-
+        
+        _logger.Debug("Endpoint [api/auth/register] finished.", result);
         return Ok(result);
     }
 }

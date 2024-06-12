@@ -2,6 +2,7 @@
 using FantasyGame.Exceptions;
 using FantasyGame.Models.Entities;
 using FantasyGame.Repositories.Interfaces;
+using FantasyGame.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace FantasyGame.Repositories;
@@ -13,13 +14,18 @@ public class UserRepository : IUserRepository
 {
     private readonly AppDbContext _context;
 
+    private readonly ILoggerService _logger;
     /// <summary>
     ///     Constructor for <see cref="UserRepository"/>.
     /// </summary>
     /// <param name="context"> Injected <see cref="AppDbContext"/> implementation. </param>
-    public UserRepository(AppDbContext context)
+    /// <param name="logger"> Injected <see cref="ILoggerService"/> implementation. </param>
+    public UserRepository(AppDbContext context,
+        ILoggerService logger)
     {
         _context = context;
+
+        _logger = logger;
     }
 
     public async Task<User> CreateAsync(User user)
@@ -32,10 +38,13 @@ public class UserRepository : IUserRepository
             {
                 throw new Exception("User create operation failed with SaveChangesAsync result = 0");
             }
+
+            _logger.Info("User successfully created.", user);
         }
         catch (Exception ex)
         {
-            throw new DbCreateException($"User creation failed. Inner message: {ex.Message}");
+            _logger.Error($"User creation failed. Inner message: {ex.Message}", user);
+            throw new DbCreateException($"User creation failed.");
         }
 
         return user;

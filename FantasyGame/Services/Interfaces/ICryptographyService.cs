@@ -10,6 +10,7 @@ public interface ICryptographyService
     /// </summary>
     /// <param name="cipherText">Input cipher <see cref="string"/> that should be decrypted.</param>
     /// <returns>A <see cref="Task"/> with <see cref="string"/> - decrypted cipher value.</returns>
+    /// <exception cref="Miltiple exceptions."></exception>
     public Task<string> AesDecryptAsync(string cipherText);
 
     /// <summary>
@@ -17,6 +18,7 @@ public interface ICryptographyService
     /// </summary>
     /// <param name="input">Input <see cref="string"/> that should be encrypted.</param>
     /// <returns>A <see cref="Task"/> with <see cref="string"/> - encrypted cipher text.</returns>
+    /// <exception cref="Miltiple exceptions."></exception>
     public Task<string> AesEncryptAsync(string input);
 
     /// <summary>
@@ -24,5 +26,6 @@ public interface ICryptographyService
     /// </summary>
     /// <param name="input">Input string that should be hashed.</param>
     /// <returns>A <see cref="Task"/> with string value of hash.</returns>
+    /// <exception cref="Miltiple exceptions."></exception>
     public Task<string> GetSha256HashAsync(string input);
 }
