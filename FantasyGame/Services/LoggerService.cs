@@ -82,13 +82,13 @@ public class LoggerService : ILoggerService
         }
 
         file = Path.GetFileName(file);
-        string logMessageBase = $"{file} {method} {line} {message}";
-        if(obj is not null)
+        if (obj is not null)
         {
             string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented);
-            logMessageBase += Environment.NewLine + "OBJECT:";
-            logMessageBase += Environment.NewLine + serializedObject;
+            message += Environment.NewLine + "OBJECT:";
+            message += Environment.NewLine + serializedObject;
         }
+        string logMessageBase = $"{file} {method} {line} {message}";
 
         if (_config.UseConsoleLogger)
         {
@@ -102,7 +102,7 @@ public class LoggerService : ILoggerService
         
         if (_config.UseDbLogger)
         {
-            LogToDatabase(logLevel, logMessageBase, file, method, line);
+            LogToDatabase(logLevel, message, file, method, line);
         }
     }
 
