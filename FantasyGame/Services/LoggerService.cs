@@ -8,6 +8,9 @@ using System.Runtime.CompilerServices;
 
 namespace FantasyGame.Services;
 
+/// <summary>
+///     Service responsible for logging informations. Implementation of <see cref="ILoggerService"/> interface.
+/// </summary>
 public class LoggerService : ILoggerService
 {
     private readonly AppDbContext _context;
@@ -15,6 +18,12 @@ public class LoggerService : ILoggerService
 
     private readonly FileLoggerConfig _fileLoggerConfig = new();
 
+    /// <summary>
+    ///     Constructor for <see cref="LoggerService"/>.
+    /// </summary>
+    /// <param name="context">Injected <see cref="AppDbContext"/>.</param>
+    /// <param name="config">Injected <see cref="LoggerConfig"/> object.</param>
+    /// <exception cref="Exception"></exception>
     public LoggerService(AppDbContext context, IOptions<LoggerConfig> config)
     {
         _config = config.Value;
@@ -54,6 +63,15 @@ public class LoggerService : ILoggerService
 
     #region Non-interface
     
+    /// <summary>
+    ///     Method that is facade for logging to multiple targets.
+    /// </summary>
+    /// <param name="logLevel">Log severity of log message.</param>
+    /// <param name="message">Text of log message.</param>
+    /// <param name="file">File where log was executed.</param>
+    /// <param name="method">Method where log was executed.</param>
+    /// <param name="line">Line where log was executed.</param>
+    /// <exception cref="ArgumentException"></exception>
     private void LogMessage(LogSeverity logLevel, string message, string file, string method, int line)
     {
         file = Path.GetFileName(file);
@@ -75,6 +93,11 @@ public class LoggerService : ILoggerService
         }
     }
 
+    /// <summary>
+    ///     Method that prints log message on console.
+    /// </summary>
+    /// <param name="logLevel">Log severity of log message.</param>
+    /// <param name="message">Text of log message.</param>
     private void LogToConsole(LogSeverity logLevel, string message)
     {
         try
@@ -86,25 +109,14 @@ public class LoggerService : ILoggerService
         catch { }
     }
 
-    private void LogToFile(LogSeverity logLevel, string message)
-    {
-        try
-        {
-            string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} [{logLevel}] {message}{Environment.NewLine}";
-            string path = _fileLoggerConfig.FileLoggerPath + $"\\logfile_{DateTime.UtcNow:yyyy-MM-dd}.log";
-            if (File.Exists(path))
-            {
-                File.AppendAllText(path, log);
-            }
-            else
-            {
-                File.Create(path).Close();
-                File.AppendAllText(path, log);
-            }
-        }
-        catch { }
-    }
-
+    /// <summary>
+    ///     Method that prints log message to database.
+    /// </summary>
+    /// <param name="logLevel">Log severity of log message.</param>
+    /// <param name="message">Text of log message.</param>
+    /// <param name="file">File where log was executed.</param>
+    /// <param name="method">Method where log was executed.</param>
+    /// <param name="line">Line where log was executed.</param>
     private void LogToDatabase(LogSeverity logLevel, string message, string file, string method, int line)
     {
         try
@@ -121,7 +133,7 @@ public class LoggerService : ILoggerService
             };
 
             int result = 0;
-            int currentAttempt = 0;    
+            int currentAttempt = 0;
             int maxAttempts = 5;
             do
             {
@@ -130,6 +142,30 @@ public class LoggerService : ILoggerService
                 result = _context.SaveChanges();
             }
             while (result < 1 && currentAttempt <= maxAttempts);
+        }
+        catch { }
+    }
+
+    /// <summary>
+    ///     Method that prints log message to file.
+    /// </summary>
+    /// <param name="logLevel">Log severity of log message.</param>
+    /// <param name="message">Text of log message.</param>
+    private void LogToFile(LogSeverity logLevel, string message)
+    {
+        try
+        {
+            string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} [{logLevel}] {message}{Environment.NewLine}";
+            string path = _fileLoggerConfig.FileLoggerPath + $"\\logfile_{DateTime.UtcNow:yyyy-MM-dd}.log";
+            if (File.Exists(path))
+            {
+                File.AppendAllText(path, log);
+            }
+            else
+            {
+                File.Create(path).Close();
+                File.AppendAllText(path, log);
+            }
         }
         catch { }
     }

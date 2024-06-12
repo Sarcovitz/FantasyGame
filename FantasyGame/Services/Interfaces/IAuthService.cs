@@ -3,6 +3,9 @@ using FantasyGame.Models.Responses;
 
 namespace FantasyGame.Services.Interfaces;
 
+/// <summary>
+///     Interface for service responsible for user authentication related operations.
+/// </summary>
 public interface IAuthService
 {
     /// <summary>

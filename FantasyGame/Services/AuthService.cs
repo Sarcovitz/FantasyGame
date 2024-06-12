@@ -4,10 +4,12 @@ using FantasyGame.Models.Requests;
 using FantasyGame.Models.Responses;
 using FantasyGame.Repositories.Interfaces;
 using FantasyGame.Services.Interfaces;
-using System.Data;
 
 namespace FantasyGame.Services;
 
+/// <summary>
+///     Service responsible for user authentication related operations. Implementation of <see cref="IAuthService"/> interface.
+/// </summary>
 public class AuthService : IAuthService
 {
     private readonly ICryptographyService _cryptographyService;
@@ -34,10 +36,12 @@ public class AuthService : IAuthService
         _userRepository = userRepository;
     }
 
+    #region IAuthService
+
     public async Task<RegisterUserResponse> RegisterNewUserAsync(RegisterUserRequest registerForm)
     {
-        string password1 = _cryptographyService.AesDecrypt(registerForm.Password!);
-        string password2 = _cryptographyService.AesDecrypt(registerForm.Password2!);
+        string password1 = await _cryptographyService.AesDecryptAsync(registerForm.Password!);
+        string password2 = await _cryptographyService.AesDecryptAsync(registerForm.Password2!);
 
         if (password1 != password2)
             throw new BadRequestStatusException("Supplied paswords are not equal.");
@@ -54,7 +58,7 @@ public class AuthService : IAuthService
         {
             Username = registerForm.Username!,
             Email = registerForm.Email!,
-            PasswordHash = _cryptographyService.GetSHA256Hash(password1),
+            PasswordHash = await _cryptographyService.GetSha256HashAsync(password1),
         };
 
         newUser = await _userRepository.CreateAsync(newUser);
@@ -78,4 +82,6 @@ public class AuthService : IAuthService
 
         return result;
     }
+
+    #endregion IAuthService
 }

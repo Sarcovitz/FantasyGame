@@ -6,7 +6,21 @@
 [Serializable]
 public class ConflictStatusException : Exception
 {
-	public ConflictStatusException() { }
-	public ConflictStatusException(string message) : base(message) { }
-	public ConflictStatusException(string message, Exception inner) : base(message, inner) { }
+    /// <summary>
+    ///     Constructor for <see cref="ConflictStatusException"/>.
+    /// </summary>
+    public ConflictStatusException() { }
+
+    /// <summary>
+    ///     Constructor for <see cref="ConflictStatusException"/>.
+    /// </summary>
+    /// <param name="message">Message of exception.</param>
+    public ConflictStatusException(string message) : base(message) { }
+
+    /// <summary>
+    ///     Constructor for <see cref="ConflictStatusException"/>.
+    /// </summary>
+    /// <param name="message">Message of exception.</param>
+    /// <param name="inner">Inner <see cref="Exception"/>.</param>
+    public ConflictStatusException(string message, Exception inner) : base(message, inner) { }
 }

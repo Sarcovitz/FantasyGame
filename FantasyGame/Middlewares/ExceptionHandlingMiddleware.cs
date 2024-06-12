@@ -3,6 +3,9 @@ using System.Net;
 
 namespace FantasyGame.Models.Middlewares;
 
+/// <summary>
+///     Middleware responsible for handling uncatched exceptions and wrapping them to valid HTTP response.
+/// </summary>
 public class ExceptionHandlingMiddleware : IMiddleware
 {
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
