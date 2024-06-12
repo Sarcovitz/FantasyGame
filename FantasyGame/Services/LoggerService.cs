@@ -63,6 +63,15 @@ public class LoggerService : ILoggerService
 
     #region Non-interface
     
+    /// <summary>
+    ///     Method that is facade for logging to multiple targets.
+    /// </summary>
+    /// <param name="logLevel">Log severity of log message.</param>
+    /// <param name="message">Text of log message.</param>
+    /// <param name="file">File where log was executed.</param>
+    /// <param name="method">Method where log was executed.</param>
+    /// <param name="line">Line where log was executed.</param>
+    /// <exception cref="ArgumentException"></exception>
     private void LogMessage(LogSeverity logLevel, string message, string file, string method, int line)
     {
         file = Path.GetFileName(file);
