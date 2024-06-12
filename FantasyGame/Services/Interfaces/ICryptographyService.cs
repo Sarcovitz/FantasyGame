@@ -1,5 +1,8 @@
 namespace FantasyGame.Services.Interfaces;
 
+/// <summary>
+///     Interface for service responsible cryptographic operations.
+/// </summary>
 public interface ICryptographyService
 {
     public Task<string> AesDecryptAsync(string cipherText);
