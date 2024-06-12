@@ -6,16 +6,24 @@ using System.Text;
 
 namespace FantasyGame.Services;
 
+/// <summary>
+///     Service responsible for cryptographic operations. Implementation of <see cref="IAuthService"/> interface.
+/// </summary>
 public class CryptographyService : ICryptographyService
 {
     private readonly CryptographyConfig _cryptographyConfig;
 
+    /// <summary>
+    ///     Contructor for <see cref="CryptographyService"/>.
+    /// </summary>
+    /// <param name="cryptographyConfig">Injected <see cref="CryptographyConfig"/> object.</param>
     public CryptographyService(IOptions<CryptographyConfig> cryptographyConfig)
     {
         _cryptographyConfig = cryptographyConfig.Value;
     }
 
     #region ICryptographyService
+
     public async Task<string> AesDecryptAsync(string cipherText)
     {
         using Aes aes = Aes.Create();
