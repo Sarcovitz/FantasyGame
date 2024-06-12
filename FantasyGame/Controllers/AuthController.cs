@@ -39,13 +39,22 @@ public class AuthController : Controller
     [Route("register")]
     public async Task<IActionResult> RegisterNewUserAsync([FromBody] RegisterUserRequest? body)
     {
+        _logger.Debug("Endpoint [api/auth/register] called.");
+
         if (body is null)
+        {
+            _logger.Trace("Body is null");
             return BadRequest("Model cannot be null.");
+        }
 
         if (!ModelState.IsValid)
+        {
+            _logger.Trace("ModelState is invalid");
             return BadRequest(ModelState.GetErrors());
+        }
 
         RegisterUserResponse result = await _authService.RegisterNewUserAsync(body);
+        _logger.Debug("");
 
         return Ok(result);
     }
