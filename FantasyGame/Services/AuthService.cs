@@ -36,6 +36,8 @@ public class AuthService : IAuthService
         _userRepository = userRepository;
     }
 
+    #region IAuthService
+
     public async Task<RegisterUserResponse> RegisterNewUserAsync(RegisterUserRequest registerForm)
     {
         string password1 = await _cryptographyService.AesDecryptAsync(registerForm.Password!);
@@ -80,4 +82,6 @@ public class AuthService : IAuthService
 
         return result;
     }
+
+    #endregion IAuthService
 }
