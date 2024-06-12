@@ -109,6 +109,11 @@ public class LoggerService : ILoggerService
         catch { }
     }
 
+    /// <summary>
+    ///     Method that prints log message to file.
+    /// </summary>
+    /// <param name="logLevel">Log severity of log message.</param>
+    /// <param name="message">Text of log message.</param>
     private void LogToFile(LogSeverity logLevel, string message)
     {
         try
