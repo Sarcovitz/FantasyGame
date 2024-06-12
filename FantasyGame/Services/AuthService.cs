@@ -46,22 +46,39 @@ public class AuthService : IAuthService
 
     public async Task<RegisterUserResponse> RegisterNewUserAsync(RegisterUserRequest registerForm)
     {
-        string password1 = await _cryptographyService.AesDecryptAsync(registerForm.Password!);
-        string password2 = await _cryptographyService.AesDecryptAsync(registerForm.Password2!);
+        string password1 = string.Empty;
+        string password2 = string.Empty;
+
+        try
+        {
+            password1 = await _cryptographyService.AesDecryptAsync(registerForm.Password!);
+            password2 = await _cryptographyService.AesDecryptAsync(registerForm.Password2!);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error($"Could not decrypt supplied passwords' ciphers: p1 - {registerForm.Password!} p2 - {registerForm.Password2!}");
+            throw new BadRequestStatusException("Could not decrypt supplied passwords' ciphers.");
+        }
 
         if (password1 != password2)
         {
-            _logger.Debug("Supplied passwords are not identical");
+            _logger.Debug($"Supplied passwords are not identical: p1 - {password1} p2 - {password2}");
             throw new BadRequestStatusException("Supplied paswords are not equal.");
         }
 
         User? user = await _userRepository.GetByUsernameAsync(registerForm.Username!);
         if (user is not null)
+        {
+            _logger.Debug($"User with supplied username already exists. Username: {registerForm.Username!} User ID: {user.Id}");
             throw new ConflictStatusException("User with supplied username already exists.");
+        }
 
         user = await _userRepository.GetByEmailAsync(registerForm.Email!);
         if (user is not null)
-            throw new ConflictStatusException("User with supplied e-mail already exists.");
+        {
+            _logger.Debug($"User with supplied e-mail address already exists. E-mail address: {registerForm.Email!} User ID: {user.Id}");
+            throw new ConflictStatusException("User with supplied e-mail address already exists.");
+        }
 
         User newUser = new()
         {
@@ -78,7 +95,7 @@ public class AuthService : IAuthService
         }
         catch (Exception) 
         {
-            //TODO logs
+            _logger.Error($"Error while sending account confirmation e-mail. E-mail address: {registerForm.Email!} User ID: {user.Id}");
             throw new InternalServerErrorStatusException($"Error while sending account confirmation e-mail.");
         }
 
