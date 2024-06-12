@@ -4,10 +4,12 @@ using FantasyGame.Models.Requests;
 using FantasyGame.Models.Responses;
 using FantasyGame.Repositories.Interfaces;
 using FantasyGame.Services.Interfaces;
-using System.Data;
 
 namespace FantasyGame.Services;
 
+/// <summary>
+///     Service responsible for user authentication related operations. Implementation of <see cref="IAuthService"/> interface.
+/// </summary>
 public class AuthService : IAuthService
 {
     private readonly ICryptographyService _cryptographyService;
