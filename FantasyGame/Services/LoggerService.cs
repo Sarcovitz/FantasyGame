@@ -110,30 +110,6 @@ public class LoggerService : ILoggerService
     }
 
     /// <summary>
-    ///     Method that prints log message to file.
-    /// </summary>
-    /// <param name="logLevel">Log severity of log message.</param>
-    /// <param name="message">Text of log message.</param>
-    private void LogToFile(LogSeverity logLevel, string message)
-    {
-        try
-        {
-            string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} [{logLevel}] {message}{Environment.NewLine}";
-            string path = _fileLoggerConfig.FileLoggerPath + $"\\logfile_{DateTime.UtcNow:yyyy-MM-dd}.log";
-            if (File.Exists(path))
-            {
-                File.AppendAllText(path, log);
-            }
-            else
-            {
-                File.Create(path).Close();
-                File.AppendAllText(path, log);
-            }
-        }
-        catch { }
-    }
-
-    /// <summary>
     ///     Method that prints log message to database.
     /// </summary>
     /// <param name="logLevel">Log severity of log message.</param>
@@ -157,7 +133,7 @@ public class LoggerService : ILoggerService
             };
 
             int result = 0;
-            int currentAttempt = 0;    
+            int currentAttempt = 0;
             int maxAttempts = 5;
             do
             {
@@ -166,6 +142,30 @@ public class LoggerService : ILoggerService
                 result = _context.SaveChanges();
             }
             while (result < 1 && currentAttempt <= maxAttempts);
+        }
+        catch { }
+    }
+
+    /// <summary>
+    ///     Method that prints log message to file.
+    /// </summary>
+    /// <param name="logLevel">Log severity of log message.</param>
+    /// <param name="message">Text of log message.</param>
+    private void LogToFile(LogSeverity logLevel, string message)
+    {
+        try
+        {
+            string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} [{logLevel}] {message}{Environment.NewLine}";
+            string path = _fileLoggerConfig.FileLoggerPath + $"\\logfile_{DateTime.UtcNow:yyyy-MM-dd}.log";
+            if (File.Exists(path))
+            {
+                File.AppendAllText(path, log);
+            }
+            else
+            {
+                File.Create(path).Close();
+                File.AppendAllText(path, log);
+            }
         }
         catch { }
     }
