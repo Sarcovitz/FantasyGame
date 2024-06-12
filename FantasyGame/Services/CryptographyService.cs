@@ -54,7 +54,7 @@ public class CryptographyService : ICryptographyService
         return Convert.ToBase64String(ms.ToArray());
     }
 
-    public async Task<string> GetSHA256HashAsync(string input)
+    public async Task<string> GetSha256HashAsync(string input)
     {
         input += _cryptographyConfig.HashSalt;
         using MemoryStream ms = new(Encoding.UTF8.GetBytes(input));
