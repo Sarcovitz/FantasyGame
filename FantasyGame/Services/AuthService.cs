@@ -76,7 +76,7 @@ public class AuthService : IAuthService
         {
             await _emailService.SendAccountConfirmationEmailAsync(newUser);
         }
-        catch (Exception ex) 
+        catch (Exception) 
         {
             //TODO logs
             throw new InternalServerErrorStatusException($"Error while sending account confirmation e-mail.");
