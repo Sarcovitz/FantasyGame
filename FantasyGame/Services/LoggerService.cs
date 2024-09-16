@@ -6,6 +6,7 @@ using FantasyGame.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace FantasyGame.Services;
 
@@ -81,26 +82,19 @@ public class LoggerService : ILoggerService
         file = Path.GetFileName(file);
         if (obj is not null)
         {
-            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented);
-            message += Environment.NewLine + "OBJECT:";
-            message += Environment.NewLine + serializedObject;
+            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.None);
+            message += $" OBJECT: {serializedObject}";
         }
         string logMessageBase = $"{file} {method} {line} {message}";
 
-        if (_config.UseConsoleLogger)
-        {
-            LogToConsole(logLevel, logMessageBase);
-        }
+        Task consoleLogTask = LogToConsoleAsync(logLevel, logMessageBase);
 
-        if (_config.UseFileLogger)
-        {
-            LogToFile(logLevel, logMessageBase);
-        }
+        Task fileLogTask =  LogToFileAsync(logLevel, logMessageBase);
         
-        if (_config.UseDbLogger)
-        {
-            LogToDatabase(logLevel, message, file, method, line);
-        }
+        Task dbLogTask = LogToDatabaseAsync(logLevel, message, file, method, line);
+
+        Task.WhenAll(consoleLogTask, fileLogTask, dbLogTask)
+            .RunSynchronously();
     }
 
     /// <summary>
@@ -108,13 +102,16 @@ public class LoggerService : ILoggerService
     /// </summary>
     /// <param name="logLevel">Log severity of log message.</param>
     /// <param name="message">Text of log message.</param>
-    private static void LogToConsole(LogSeverity logLevel, string message)
+    private async Task LogToConsoleAsync(LogSeverity logLevel, string message)
     {
+        if (!_config.UseConsoleLogger)
+            return;
+
         try
         {
             string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} [{logLevel}] {message}";
 
-            Console.WriteLine(log);
+            await Task.Run(() => Console.WriteLine(log));
         }
         catch { }
     }
@@ -127,8 +124,11 @@ public class LoggerService : ILoggerService
     /// <param name="file">File where log was executed.</param>
     /// <param name="method">Method where log was executed.</param>
     /// <param name="line">Line where log was executed.</param>
-    private void LogToDatabase(LogSeverity logLevel, string message, string file, string method, int line)
+    private async Task LogToDatabaseAsync(LogSeverity logLevel, string message, string file, string method, int line)
     {
+        if (!_config.UseDbLogger)
+            return;
+
         try
         {
             LogEntry log = new()
@@ -148,8 +148,8 @@ public class LoggerService : ILoggerService
             do
             {
                 currentAttempt++;
-                _context.LogEntries.Add(log);
-                result = _context.SaveChanges();
+                await _context.LogEntries.AddAsync(log);
+                result = await _context.SaveChangesAsync();
             }
             while (result < 1 && currentAttempt <= maxAttempts);
         }
@@ -161,21 +161,18 @@ public class LoggerService : ILoggerService
     /// </summary>
     /// <param name="logLevel">Log severity of log message.</param>
     /// <param name="message">Text of log message.</param>
-    private void LogToFile(LogSeverity logLevel, string message)
+    private async Task LogToFileAsync(LogSeverity logLevel, string message)
     {
+        if (!_config.UseFileLogger)
+            return;
+
         try
         {
             string log = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:dd:ffff} [{logLevel}] {message}{Environment.NewLine}";
             string path = _fileLoggerConfig.FileLoggerPath + $"\\logfile_{DateTime.UtcNow:yyyy-MM-dd}.log";
-            if (File.Exists(path))
-            {
-                File.AppendAllText(path, log);
-            }
-            else
-            {
-                File.Create(path).Close();
-                File.AppendAllText(path, log);
-            }
+
+            using StreamWriter writer = new(path, append: true, encoding: Encoding.UTF8);
+            await writer.WriteLineAsync(message);
         }
         catch { }
     }
